@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { anthropic } from "@/lib/anthropic";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { groq } from "@/lib/groq";
 import { AI_SYSTEM_PROMPT } from "@/data/ai-context";
+
+// ─── Rate limiter (Upstash Redis — survives cold starts & multi-instance) ────
+// Falls back to a no-op when env vars are absent (local dev without Redis).
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(10, "1 h"),
+        analytics: true,
+        prefix: "portfolio:chat",
+      })
+    : null;
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
 const PRODUCTION_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL;
@@ -30,26 +44,6 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, { status: 204, headers: corsHeaders(origin!) });
 }
 
-// ─── In-memory rate limiter ──────────────────────────────────────────────────
-// Resets on cold start — good enough for a personal portfolio.
-// Swap for Upstash Redis / Vercel KV before high-traffic launch.
-const rateLimiter = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 10;
-const WINDOW_MS = 60 * 60 * 1000; // 1 hour
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimiter.get(ip);
-
-  if (!record || now > record.resetAt) {
-    rateLimiter.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
-  }
-  if (record.count >= RATE_LIMIT) return false;
-  record.count++;
-  return true;
-}
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface ChatMessage {
   role: "user" | "assistant";
@@ -68,17 +62,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   }
 
-  // Rate limit by IP
+  // Rate limit by IP (Upstash sliding window — works across all instances)
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
     "unknown";
 
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again in an hour." },
-      { status: 429 },
-    );
+  if (ratelimit) {
+    const { success, remaining } = await ratelimit.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in an hour." },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(remaining) } },
+      );
+    }
   }
 
   // Parse and validate body
@@ -117,19 +114,20 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const response = await anthropic.messages.create({
-      model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514",
+    const completion = await groq.chat.completions.create({
+      model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
       max_tokens: 512,
-      system: AI_SYSTEM_PROMPT,
-      messages: sanitized,
+      messages: [
+        { role: "system", content: AI_SYSTEM_PROMPT },
+        ...sanitized,
+      ],
     });
 
-    const block = response.content[0];
-    const reply = block.type === "text" ? block.text : "";
+    const reply = completion.choices[0]?.message?.content ?? "";
 
     return NextResponse.json({ reply });
   } catch (err) {
-    console.error("[api/chat] Anthropic error:", err);
+    console.error("[api/chat] Groq error:", err);
     return NextResponse.json(
       { error: "Failed to generate a response. Please try again." },
       { status: 500 },

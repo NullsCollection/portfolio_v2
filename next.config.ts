@@ -14,11 +14,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`, // unsafe-eval dev-only (React call stacks)
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      `script-src 'self' 'unsafe-inline' https://app.cal.com${isDev ? " 'unsafe-eval'" : ""}`, // unsafe-eval dev-only (React call stacks)
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://app.cal.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https://*.supabase.co https://api.anthropic.com https://formspree.io",
-      "img-src 'self' data: blob:",
+      "connect-src 'self' https://*.supabase.co https://api.groq.com https://formspree.io https://cal.com https://app.cal.com",
+      "img-src 'self' data: blob: https://cal.com https://app.cal.com",
+      "frame-src 'self' https://cal.com https://app.cal.com",
       "frame-ancestors 'none'",
     ].join("; "),
   },

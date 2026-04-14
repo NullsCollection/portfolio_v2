@@ -1,5 +1,29 @@
 "use server";
 
+import { headers } from "next/headers";
+
+// ---------------------------------------------------------------------------
+// In-memory rate limit — 5 submissions per IP per 10 minutes.
+// Module-level Map persists across requests within a single serverless
+// instance. Good enough for a personal portfolio; upgrade to Upstash/KV
+// if you ever need cross-instance coordination.
+// ---------------------------------------------------------------------------
+const RL_MAX = 5;
+const RL_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const rlStore = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rlStore.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rlStore.set(ip, { count: 1, resetAt: now + RL_WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RL_MAX) return true;
+  entry.count++;
+  return false;
+}
+
 interface ContactInput {
   name: string;
   email: string;
@@ -14,6 +38,20 @@ interface ContactResult {
 export async function submitContact(
   data: ContactInput,
 ): Promise<ContactResult> {
+  // Rate limit check — resolve IP from forwarded headers (Vercel sets x-forwarded-for)
+  const headersList = await headers();
+  const ip =
+    headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    headersList.get("x-real-ip") ??
+    "unknown";
+
+  if (isRateLimited(ip)) {
+    return {
+      success: false,
+      error: "Too many submissions. Please wait a few minutes and try again.",
+    };
+  }
+
   const { name, email, message } = data;
 
   if (!name.trim() || !email.trim() || !message.trim()) {

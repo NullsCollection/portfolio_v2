@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { label: "Work", href: "#projects" },
@@ -25,11 +26,11 @@ export function Nav() {
   return (
     <header
       className={[
-        'fixed inset-x-0 top-0 z-50 border-b backdrop-blur-lg transition-colors duration-300',
+        "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-lg transition-colors duration-300",
         scrolled
-          ? 'border-white/10 bg-[#202124]/90'
-          : 'border-white/5 bg-[#202124]/75',
-      ].join(' ')}
+          ? "border-white/10 bg-[#202124]/90"
+          : "border-white/5 bg-[#202124]/75",
+      ].join(" ")}
     >
       <nav
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6"
@@ -57,12 +58,12 @@ export function Nav() {
             ))}
           </ul>
 
-          <a
-            href="#contact"
+          <Link
+            href="/book"
             className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
           >
-            Let&apos;s talk
-          </a>
+            Book a call
+          </Link>
         </div>
 
         {/* Mobile burger button */}
@@ -98,13 +99,13 @@ export function Nav() {
               ))}
             </ul>
 
-            <a
-              href="#contact"
+            <Link
+              href="/book"
               onClick={closeMobileMenu}
-              className="mt-4 block rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+              className="mt-4 block w-full rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-500"
             >
-              Let&apos;s talk
-            </a>
+              Book a call
+            </Link>
           </div>
         </div>
       )}
