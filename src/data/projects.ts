@@ -68,7 +68,7 @@ export const projects: Project[] = [
     description:
       "Complete character design package including original character concepts, polished illustrations, custom color palettes, expressive poses, and ready-to-use assets.",
     tags: ["Illustrator", "Character Design", "Digital Art"],
-    image: "/assets/projects/Monster/Artboard-2",
+    image: "/assets/projects/Monster/Artboard-2.png",
     featured: false,
     liveUrl:
       "https://www.behance.net/gallery/222146595/Character-Design-Monsters",
