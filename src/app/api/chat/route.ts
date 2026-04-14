@@ -22,11 +22,9 @@ const PRODUCTION_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL;
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
   if (origin === PRODUCTION_ORIGIN) return true;
-  if (
-    process.env.NODE_ENV === "development" &&
-    origin.startsWith("http://localhost")
-  )
-    return true;
+  if (origin.startsWith("http://localhost")) return true;
+  // Allow Vercel preview deployments (*.vercel.app)
+  if (origin.endsWith(".vercel.app")) return true;
   return false;
 }
 
