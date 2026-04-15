@@ -5,6 +5,7 @@ import { Projects } from "@/components/Projects";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { ChatWidget } from "@/components/ChatWidget";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
@@ -17,25 +18,25 @@ export default function Home() {
 
         {/* Thin separator */}
         <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-white/5" />
+          <div className="h-px bg-[var(--color-border-subtle)]" />
         </div>
 
         <Experience />
 
         <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-white/5" />
+          <div className="h-px bg-[var(--color-border-subtle)]" />
         </div>
 
         <Projects />
 
         <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-white/5" />
+          <div className="h-px bg-[var(--color-border-subtle)]" />
         </div>
 
         <About />
 
         <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-white/5" />
+          <div className="h-px bg-[var(--color-border-subtle)]" />
         </div>
 
         <Contact />
@@ -53,8 +54,9 @@ export default function Home() {
         </div>
       </footer> */}
 
-      {/* Floating chat widget — outside main for stacking context */}
+      {/* Floating elements — outside main for stacking context */}
       <ChatWidget />
+      <ThemeToggle />
     </>
   );
 }

@@ -69,12 +69,12 @@ export function Hero() {
           >
             {/* Availability badge */}
             <motion.div variants={fadeUp}>
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/50 px-3.5 py-1.5 backdrop-blur-sm">
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-status-success)] opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-status-success)]" />
                 </span>
-                <span className="text-xs font-medium tracking-wide text-white/65">
+                <span className="text-xs font-medium tracking-wide text-muted">
                   Available for Freelance &amp; Full-Time (Remote)
                 </span>
               </div>
@@ -83,7 +83,7 @@ export function Hero() {
             {/* Name */}
             <motion.h1
               variants={fadeUp}
-              className="text-5xl font-semibold leading-[1.04] tracking-tight text-white md:text-7xl"
+              className="text-5xl font-semibold leading-[1.04] tracking-tight text-[var(--color-text-primary)] md:text-7xl"
             >
               Raffy Francisco
             </motion.h1>
@@ -99,7 +99,7 @@ export function Hero() {
             {/* Tagline */}
             <motion.p
               variants={fadeUp}
-              className="max-w-[400px] text-sm leading-relaxed text-white/45"
+              className="max-w-[400px] text-sm leading-relaxed text-muted"
             >
               Helping businesses scale through clean design, smart development,
               and digital solutions.
@@ -110,7 +110,7 @@ export function Hero() {
               {SPECIALTIES.map(({ label }) => (
                 <span
                   key={label}
-                  className="rounded-full border border-white/10 bg-surface px-3 py-1 text-xs font-medium text-white/50"
+                  className="rounded-full border border-[var(--color-border)] bg-surface px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)]"
                 >
                   {label}
                 </span>
@@ -124,7 +124,7 @@ export function Hero() {
             >
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[#202124]"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]"
               >
                 View My Work
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -132,7 +132,7 @@ export function Hero() {
               <a
                 href="/assets/RESUME-Raffy-francisco.pdf"
                 target="_blank"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-surface px-5 py-2.5 text-sm font-medium text-white/80 transition-colors hover:border-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-[#202124]"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-strong)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]"
               >
                 Download CV
                 <Download className="h-3.5 w-3.5" aria-hidden="true" />
@@ -151,7 +151,7 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="rounded-lg p-2 text-muted transition-all hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+                  className="rounded-lg p-2 text-muted transition-all hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-strong)]"
                 >
                   <Icon className="h-5 w-5" />
                 </a>
@@ -167,7 +167,7 @@ export function Hero() {
             className="relative hidden lg:flex lg:justify-center"
           >
             {/* Photo frame */}
-            <div className="group relative aspect-[4/4] w-96 overflow-hidden rounded-2xl border border-white/10 bg-surface transition-all duration-500 hover:border-secondary/40">
+            <div className="group relative aspect-[4/4] w-96 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface transition-all duration-500 hover:border-secondary/40">
               <Image
                 src="/assets/Profile.png"
                 alt="Raffy Francisco"
@@ -176,7 +176,7 @@ export function Hero() {
                 priority
               />
               {/* Gradient overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#202124]/60 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/20 via-transparent to-transparent" />
               {/* Corner accent */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-tertiary/8" />
             </div>
@@ -192,11 +192,11 @@ export function Hero() {
         aria-hidden="true"
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
-        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/15 p-1.5">
+        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-[var(--color-border)] p-1.5">
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="h-1.5 w-1 rounded-full bg-white/30"
+            className="h-1.5 w-1 rounded-full bg-[var(--color-border)]"
           />
         </div>
       </motion.div>

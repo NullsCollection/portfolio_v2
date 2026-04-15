@@ -9,7 +9,7 @@ export function Badge({ variant = 'default', className = '', children, ...props 
     'inline-flex items-center rounded-full text-xs font-medium px-2.5 py-1 leading-none';
 
   const variants = {
-    default: 'bg-white/5 text-white/60 border border-white/10',
+    default: 'bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] border border-[var(--color-border)]',
     tag: 'bg-tertiary/10 text-tertiary',
   };
 

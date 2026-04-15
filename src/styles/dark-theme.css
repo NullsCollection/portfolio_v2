@@ -1,0 +1,50 @@
+/* ─── Dark Theme ──────────────────────────────────────────────────────────────
+   Activated when: data-theme="dark" on <html>
+   Default: yes — matches original design and most users' OS preference at night
+ ──────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="dark"] {
+  /* Existing tokens */
+  --color-secondary: #4f46e5;
+  --color-tertiary: #22d3ee;
+  --color-surface: #303134;
+  --color-muted: #96a1b0;
+
+  /* Backgrounds */
+  --color-bg-base: #202124;
+  --color-bg-surface: #303134;
+  --color-bg-input: #2a2b2e;
+  --color-bg-elevated: #303134;
+
+  /* Text */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #96a1b0;
+  --color-text-muted: #64748b;
+  --color-text-accent: #4f46e5;
+  --color-text-tertiary: #22d3ee;
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-strong: rgba(255, 255, 255, 0.2);
+
+  /* Navigation */
+  --color-navbar-bg: #202124;
+  --color-navbar-border: rgba(255, 255, 255, 0.1);
+
+  /* Accent */
+  --color-accent: #4f46e5;
+  --color-accent-hover: #6366f1;
+  --color-accent-subtle: color-mix(in srgb, #4f46e5 10%, transparent);
+
+  /* Status */
+  --color-status-success: #34d399;
+  --color-status-success-bg: rgba(52, 211, 153, 0.05);
+  --color-status-error: #f87171;
+  --color-status-error-bg: rgba(248, 113, 113, 0.05);
+
+  /* Misc */
+  --color-dot-grid: rgba(255, 255, 255, 0.07);
+  --color-scrollbar: rgba(255, 255, 255, 0.1);
+  --color-shadow-card: rgba(79, 70, 229, 0.07);
+}

@@ -15,13 +15,13 @@ type ButtonAsAnchor = BaseProps &
 type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 const base =
-  'inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#202124] disabled:pointer-events-none disabled:opacity-50';
+  'inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)] disabled:pointer-events-none disabled:opacity-50';
 
 const variants = {
   primary:
-    'bg-secondary text-white hover:bg-indigo-500 focus-visible:ring-secondary',
+    'bg-secondary text-white hover:bg-[var(--color-accent-hover)] focus-visible:ring-secondary',
   ghost:
-    'border border-white/20 text-white hover:bg-white/5 focus-visible:ring-white/20',
+    'border border-[var(--color-border-strong)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] focus-visible:ring-[var(--color-border-strong)]',
 };
 
 export function Button({ variant = 'primary', className = '', children, ...props }: ButtonProps) {

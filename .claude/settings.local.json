@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(grep -n \"bg-secondary\\\\|bg-tertiary\\\\|text-secondary\\\\|text-tertiary\\\\|bg-surface\\\\|text-muted\" /c/Users/raffy/Desktop/Repo/portfolio-overhaul/portfolio-v2/src/components/*.tsx)",
+      "mcp__plugin_figma_figma__get_metadata",
+      "mcp__plugin_figma_figma__generate_figma_design",
+      "mcp__figma-console__figma_execute",
+      "Bash(npm run:*)"
     ]
   }
 }

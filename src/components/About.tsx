@@ -15,12 +15,12 @@ export function About() {
       <div className="mx-auto max-w-4xl px-6">
         <AnimateIn>
           <div className="mb-16">
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-tertiary">
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-text-accent">
               Background
             </p>
             <h2
               id="about-heading"
-              className="text-3xl font-semibold tracking-tight text-white"
+              className="text-3xl font-semibold tracking-tight text-text-primary"
             >
               About
             </h2>
@@ -37,7 +37,7 @@ export function About() {
                 freelance. I build fast web apps and automate the workflows
                 behind them — React frontends, Next.js APIs, and n8n pipelines
                 wired to AI.{" "}
-                <span className="text-white">
+                <span className="text-text-primary">
                   {" "}
                   If a process can be automated, I'll automate it.
                 </span>
@@ -51,7 +51,7 @@ export function About() {
                 {SPECIALIZATIONS.map(({ icon: Icon, label }) => (
                   <div
                     key={label}
-                    className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-surface px-3 py-1.5 text-sm text-white/65"
+                    className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-3 py-1.5 text-sm text-[var(--color-text-secondary)]"
                   >
                     <Icon
                       className="h-3.5 w-3.5 text-secondary"
@@ -76,7 +76,7 @@ export function About() {
                     {skills.map((skill) => (
                       <span
                         key={skill}
-                        className="rounded-full bg-surface px-2.5 py-1 text-xs text-muted"
+                        className="rounded-full bg-surface px-2.5 py-1 text-xs text-muted border border-[var(--color-border)]"
                       >
                         {skill}
                       </span>

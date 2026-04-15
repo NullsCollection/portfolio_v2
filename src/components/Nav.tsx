@@ -28,8 +28,8 @@ export function Nav() {
       className={[
         "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-lg transition-colors duration-300",
         scrolled
-          ? "border-white/10 bg-[#202124]/90"
-          : "border-white/5 bg-[#202124]/75",
+          ? "border-[var(--color-navbar-border)] bg-[var(--color-navbar-bg)]/90"
+          : "border-[var(--color-border-subtle)] bg-[var(--color-navbar-bg)]/75",
       ].join(" ")}
     >
       <nav
@@ -38,19 +38,19 @@ export function Nav() {
       >
         <a
           href="#"
-          className="text-sm font-semibold tracking-tight text-white transition-opacity hover:opacity-70"
+          className="text-sm font-semibold tracking-tight text-muted transition-opacity hover:opacity-70"
         >
           NullzCollection
         </a>
 
         {/* Desktop navigation */}
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           <ul className="flex items-center gap-1" role="list">
             {NAV_LINKS.map(({ label, href }) => (
               <li key={label}>
                 <a
                   href={href}
-                  className="rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:text-white"
+                  className="rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:text-[var(--color-text-primary)]"
                 >
                   {label}
                 </a>
@@ -60,7 +60,7 @@ export function Nav() {
 
           <Link
             href="/book"
-            className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+            className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)]"
           >
             Book a call
           </Link>
@@ -69,7 +69,7 @@ export function Nav() {
         {/* Mobile burger button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="rounded-md p-2 text-white transition-colors hover:bg-white/5 md:hidden"
+          className="rounded-md p-2 text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-bg-surface)] md:hidden"
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
         >
@@ -83,7 +83,7 @@ export function Nav() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-white/5 bg-[#202124] md:hidden">
+        <div className="border-t border-[var(--color-border-subtle)] bg-[var(--color-navbar-bg)] md:hidden">
           <div className="mx-auto max-w-4xl px-6 py-4">
             <ul className="flex flex-col gap-1" role="list">
               {NAV_LINKS.map(({ label, href }) => (
@@ -91,7 +91,7 @@ export function Nav() {
                   <a
                     href={href}
                     onClick={closeMobileMenu}
-                    className="block rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-white/5 hover:text-white"
+                    className="block rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)]"
                   >
                     {label}
                   </a>
@@ -102,7 +102,7 @@ export function Nav() {
             <Link
               href="/book"
               onClick={closeMobileMenu}
-              className="mt-4 block w-full rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+              className="mt-4 block w-full rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)]"
             >
               Book a call
             </Link>

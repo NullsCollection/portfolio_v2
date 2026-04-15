@@ -1,0 +1,50 @@
+/* ─── Light Theme ─────────────────────────────────────────────────────────────
+   Activated when: data-theme="light" on <html>
+   Targets: users with OS light preference, or manual toggle to light
+ ──────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="light"] {
+  /* Existing tokens */
+  --color-secondary: #4f46e5;
+  --color-tertiary: #0e7490; /* darkened — #22d3ee is too light on white */
+  --color-surface: #ffffff;
+  --color-muted: #64748b; /* stepped darker — stays readable on light bg */
+
+  /* Backgrounds */
+  --color-bg-base: #f8f9fa;
+  --color-bg-surface: #ffffff;
+  --color-bg-input: #f1f3f5;
+  --color-bg-elevated: #ffffff;
+
+  /* Text */
+  --color-text-primary: #202124;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-accent: #4f46e5;
+  --color-text-tertiary: #0e7490;
+
+  /* Borders */
+  --color-border: #e2e6eb;
+  --color-border-subtle: #f1f3f5;
+  --color-border-strong: #c5ccd6;
+
+  /* Navigation */
+  --color-navbar-bg: #f8f9fa;
+  --color-navbar-border: #e2e6eb;
+
+  /* Accent */
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca; /* darker hover — needed on light bg */
+  --color-accent-subtle: color-mix(in srgb, #4f46e5 10%, transparent);
+
+  /* Status */
+  --color-status-success: #059669; /* emerald-600 — contrast on white */
+  --color-status-success-bg: rgba(5, 150, 105, 0.08);
+  --color-status-error: #dc2626; /* red-600 */
+  --color-status-error-bg: rgba(220, 38, 38, 0.08);
+
+  /* Misc */
+  --color-dot-grid: rgba(0, 0, 0, 0.05);
+  --color-scrollbar: rgba(0, 0, 0, 0.15);
+  --color-shadow-card: rgba(79, 70, 229, 0.1);
+}

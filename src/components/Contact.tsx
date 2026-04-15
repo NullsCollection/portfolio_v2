@@ -43,7 +43,7 @@ const SOCIAL_LINKS = [
 type FormStatus = "idle" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-muted transition-colors focus:border-secondary/50 focus:bg-white/[0.07] focus:outline-none focus:ring-1 focus:ring-secondary/30";
+  "w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-input)] px-4 py-2.5 text-sm text-[var(--color-text-primary)] placeholder:text-muted transition-colors focus:border-secondary/50 focus:bg-[var(--color-bg-input)] focus:outline-none focus:ring-1 focus:ring-secondary/30";
 
 export function Contact() {
   const [name, setName] = useState("");
@@ -82,12 +82,12 @@ export function Contact() {
       <div className="mx-auto max-w-4xl px-6">
         <AnimateIn>
           <div className="mb-16">
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-tertiary">
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-text-accent">
               Get in Touch
             </p>
             <h2
               id="contact-heading"
-              className="text-3xl font-semibold tracking-tight text-white"
+              className="text-3xl font-semibold tracking-tight text-text-primary"
             >
               Contact
             </h2>
@@ -98,17 +98,17 @@ export function Contact() {
           {/* Form */}
           <AnimateIn>
             {status === "success" ? (
-              <div className="flex h-full flex-col items-center justify-center gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center">
-                <CheckCircle className="h-8 w-8 text-emerald-400" />
+              <div className="flex h-full flex-col items-center justify-center gap-4 rounded-xl border border-[var(--color-status-success)]/20 bg-[var(--color-status-success-bg)] p-8 text-center">
+                <CheckCircle className="h-8 w-8 text-[var(--color-status-success)]" />
                 <div>
-                  <p className="font-medium text-white">Message sent.</p>
+                  <p className="font-medium text-text-primary">Message sent.</p>
                   <p className="mt-1 text-sm text-muted">
                     I&apos;ll get back to you within 24 hours.
                   </p>
                 </div>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="text-sm text-muted underline-offset-2 hover:text-white hover:underline"
+                  className="text-sm text-muted underline-offset-2 hover:text-text-primary hover:underline"
                 >
                   Send another
                 </button>
@@ -176,7 +176,7 @@ export function Contact() {
                 </div>
 
                 {status === "error" && (
-                  <div className="flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/5 p-3 text-sm text-red-400">
+                  <div className="flex items-start gap-2 rounded-lg border border-[var(--color-status-error)]/20 bg-[var(--color-status-error-bg)] p-3 text-sm text-[var(--color-status-error)]">
                     <AlertCircle
                       className="mt-0.5 h-4 w-4 shrink-0"
                       aria-hidden="true"
@@ -188,7 +188,7 @@ export function Contact() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[#202124] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isPending ? "Sending…" : "Send Message"}
                   {!isPending && (
@@ -203,7 +203,7 @@ export function Contact() {
           <AnimateIn delay={0.12}>
             <div className="flex flex-col gap-8">
               <div>
-                <p className="mb-4 text-sm leading-relaxed text-white/70">
+                <p className="mb-4 text-sm leading-relaxed text-text-primary">
                   Prefer a faster response? Reach out directly — I check
                   everything daily.
                 </p>
@@ -216,13 +216,13 @@ export function Contact() {
                           href.startsWith("mailto") ? undefined : "_blank"
                         }
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-3 text-sm text-muted transition-colors hover:text-white"
+                        className="group flex items-center gap-3 text-sm text-muted transition-colors hover:text-text-accent"
                       >
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors group-hover:border-white/20">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] transition-colors group-hover:border-[var(--color-border-strong)]">
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span>
-                          <span className="mr-2 font-medium text-white/40">
+                          <span className="mr-2 font-medium text-text-primary">
                             {label}
                           </span>
                           {display}
@@ -240,7 +240,7 @@ export function Contact() {
                     className="h-4 w-4 text-secondary"
                     aria-hidden="true"
                   />
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-text-primary">
                     Have a quick question?
                   </p>
                 </div>
@@ -252,7 +252,7 @@ export function Contact() {
                   onClick={() =>
                     window.dispatchEvent(new CustomEvent("open-chat-widget"))
                   }
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-white"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
                 >
                   Chat with my AI assistant
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

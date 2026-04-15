@@ -1,45 +1,121 @@
+/* ─── Imports ─────────────────────────────────────────────────────────────── */
 @import "tailwindcss";
+@import "../styles/dark-theme.css";
+@import "../styles/light-theme.css";
 
+/* ─── Design Tokens ───────────────────────────────────────────────────────────
+   @theme{} holds raw scales + semantic stubs (dark values as CSS fallback for
+   Tailwind utility generation). Light/dark theme files override at runtime.
+ ──────────────────────────────────────────────────────────────────────────── */
 @theme {
-  /* Design system tokens — generate Tailwind utilities */
+  /* Primary / Neutral scale */
+  --color-primary-50: #f8f9fa;
+  --color-primary-100: #f1f3f5;
+  --color-primary-200: #e2e6eb;
+  --color-primary-300: #c5ccd6;
+  --color-primary-400: #96a1b0;
+  --color-primary-500: #64748b;
+  --color-primary-600: #475569;
+  --color-primary-700: #2d3748;
+  --color-primary-800: #303134;
+  --color-primary-850: #2a2b2e;
+  --color-primary-900: #202124;
+  --color-primary-950: #17181b;
+
+  /* Accent / Indigo scale */
+  --color-accent-50: #eef2ff;
+  --color-accent-100: #e0e7ff;
+  --color-accent-200: #c7d2fe;
+  --color-accent-300: #a5b4fc;
+  --color-accent-400: #818cf8;
+  --color-accent-500: #6366f1;
+  --color-accent-600: #4f46e5;
+  --color-accent-700: #4338ca;
+  --color-accent-800: #3730a3;
+  --color-accent-900: #312e81;
+  --color-accent-950: #1e1b4b;
+
+  /* Tertiary / Cyan scale */
+  --color-tertiary-400: #22d3ee;
+  --color-tertiary-600: #0891b2;
+  --color-tertiary-700: #0e7490;
+
+  /* ── Existing semantic tokens (dark stubs — overridden by theme files) ───── */
   --color-secondary: #4f46e5;
   --color-tertiary: #22d3ee;
   --color-surface: #303134;
   --color-muted: #96a1b0;
 
+  /* ── New semantic tokens (dark stubs — overridden by theme files) ────────── */
+  /* Backgrounds */
+  --color-bg-base: #202124;
+  --color-bg-surface: #303134;
+  --color-bg-input: #2a2b2e;
+  --color-bg-elevated: #303134;
+
+  /* Text */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #96a1b0;
+  --color-text-muted: #64748b;
+  --color-text-accent: #4f46e5;
+  --color-text-tertiary: #22d3ee;
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-strong: rgba(255, 255, 255, 0.2);
+
+  /* Navigation */
+  --color-navbar-bg: #202124;
+  --color-navbar-border: rgba(255, 255, 255, 0.1);
+
+  /* Accent semantic */
+  --color-accent: #4f46e5;
+  --color-accent-hover: #6366f1;
+  --color-accent-subtle: color-mix(in srgb, #4f46e5 10%, transparent);
+
+  /* Status */
+  --color-status-success: #34d399;
+  --color-status-success-bg: rgba(52, 211, 153, 0.05);
+  --color-status-error: #f87171;
+  --color-status-error-bg: rgba(248, 113, 113, 0.05);
+
+  /* Misc */
+  --color-dot-grid: rgba(255, 255, 255, 0.07);
+  --color-scrollbar: rgba(255, 255, 255, 0.1);
+  --color-shadow-card: rgba(79, 70, 229, 0.07);
+
   /* Font */
   --font-sans: var(--font-inter);
 }
 
-/* Canvas variables not in @theme to avoid scale conflicts */
-:root {
-  --color-neutral: #202124;
-  --color-primary: #000000;
-  --color-white: #ffffff;
-}
-
-/* Base */
+/* ─── Base Styles ─────────────────────────────────────────────────────────── */
 body {
-  background-color: #202124;
-  color: #ffffff;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dot grid background — Google Stitch vibe */
+/* Applied to Framer Motion elements to prevent animation interference */
+.no-theme-transition,
+.no-theme-transition * {
+  transition: none !important;
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────────────── */
 .dot-grid {
   background-image: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.07) 1px,
+    var(--color-dot-grid) 1px,
     transparent 1px
   );
   background-size: 16px 16px;
 }
 
-/* Custom scrollbar for chat widget */
 .chat-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-color: var(--color-scrollbar) transparent;
 }
 .chat-scroll::-webkit-scrollbar {
   width: 4px;
@@ -48,11 +124,11 @@ body {
   background: transparent;
 }
 .chat-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--color-scrollbar);
   border-radius: 2px;
 }
 
-/* Keyframes */
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
 @keyframes ping-slow {
   0% {
     transform: scale(1);
@@ -78,7 +154,6 @@ body {
 .animate-ping-slow {
   animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-
 .animate-pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
 }

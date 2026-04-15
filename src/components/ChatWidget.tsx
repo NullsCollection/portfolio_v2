@@ -131,22 +131,22 @@ export function ChatWidget() {
             transition={{ type: "spring", damping: 32, stiffness: 420 }}
             className="pointer-events-auto mx-auto max-w-2xl px-4 mb-1"
           >
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#202124]/96 shadow-2xl backdrop-blur-xl">
+            <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-base)]/96 shadow-2xl backdrop-blur-xl">
               {/* Panel header */}
-              <div className="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+              <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] px-4 py-2.5">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-status-success)] opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-status-success)]" />
                   </span>
-                  <span className="text-xs font-medium text-white/50">
+                  <span className="text-xs font-medium text-muted">
                     Raffy&apos;s AI
                   </span>
                 </div>
                 <button
                   onClick={() => setShowMessages(false)}
                   aria-label="Collapse chat"
-                  className="rounded-md p-1 text-white/30 transition-colors hover:text-white/70"
+                  className="rounded-md border-[var(--color-border)] p-1 text-muted transition-colors hover:text-foreground"
                 >
                   <ChevronDown className="h-4 w-4" />
                 </button>
@@ -161,7 +161,7 @@ export function ChatWidget() {
                       "max-w-[82%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
                       msg.role === "user"
                         ? "ml-auto bg-secondary text-white"
-                        : "mr-auto bg-surface text-white/80",
+                        : "mr-auto bg-surface text-[var(--color-text-primary)]",
                     ].join(" ")}
                   >
                     {msg.content}
@@ -196,7 +196,7 @@ export function ChatWidget() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 onClick={() => setShowMessages(true)}
-                className="mb-2 flex w-full items-center gap-1.5 text-xs text-white/30 transition-colors hover:text-white/60"
+                className="mb-2 flex w-full items-center gap-1.5 text-xs text-muted/30 transition-colors hover:text-muted cursor-pointer"
               >
                 <ChevronDown
                   className="h-3 w-3 rotate-180"
@@ -209,7 +209,7 @@ export function ChatWidget() {
           </AnimatePresence>
 
           {/* Input card */}
-          <div className="rounded-2xl border border-white/10 bg-[#2a2b2e] transition-colors duration-150 focus-within:border-white/20">
+          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-input)] transition-colors duration-150 focus-within:border-[var(--color-border-strong)]">
             <textarea
               ref={textareaRef}
               rows={1}
@@ -222,7 +222,7 @@ export function ChatWidget() {
               placeholder="Ask something about Raffy"
               disabled={isLoading}
               aria-label="Chat message input"
-              className="w-full resize-none bg-transparent px-4 pt-3.5 pb-2 text-sm text-white placeholder:text-white/25 focus:outline-none disabled:opacity-50"
+              className="w-full resize-none bg-transparent px-4 pt-3.5 pb-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none disabled:opacity-50"
             />
 
             {/* Action row */}
@@ -238,7 +238,7 @@ export function ChatWidget() {
                       onClick={reset}
                       aria-label="Reset conversation"
                       title="Reset conversation"
-                      className="flex h-7 w-7 items-center justify-center rounded-lg text-white/30 transition-colors hover:bg-white/5 hover:text-white/60"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-secondary)]"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
                     </motion.button>
@@ -251,7 +251,7 @@ export function ChatWidget() {
                 onClick={() => void sendMessage()}
                 disabled={isLoading || !input.trim()}
                 aria-label="Send message"
-                className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-white transition-all hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-25"
+                className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-25"
               >
                 {isLoading ? (
                   <Loader2
