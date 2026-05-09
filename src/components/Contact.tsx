@@ -101,14 +101,14 @@ export function Contact() {
               <div className="flex h-full flex-col items-center justify-center gap-4 rounded-xl border border-[var(--color-status-success)]/20 bg-[var(--color-status-success-bg)] p-8 text-center">
                 <CheckCircle className="h-8 w-8 text-[var(--color-status-success)]" />
                 <div>
-                  <p className="font-medium text-text-primary">Message sent.</p>
+                  <p className="font-medium text-white">Message sent.</p>
                   <p className="mt-1 text-sm text-muted">
                     I&apos;ll get back to you within 24 hours.
                   </p>
                 </div>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="text-sm text-muted underline-offset-2 hover:text-text-primary hover:underline"
+                  className="text-sm text-muted underline-offset-2 hover:text-white hover:underline"
                 >
                   Send another
                 </button>
@@ -252,7 +252,7 @@ export function Contact() {
                   onClick={() =>
                     window.dispatchEvent(new CustomEvent("open-chat-widget"))
                   }
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-white"
                 >
                   Chat with my AI assistant
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
