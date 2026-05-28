@@ -44,7 +44,7 @@ html[data-theme="light"] {
   --color-status-error-bg: rgba(220, 38, 38, 0.08);
 
   /* Misc */
-  --color-dot-grid: rgba(0, 0, 0, 0.05);
+  --color-dot-grid: rgba(0, 0, 0, 0.12);
   --color-scrollbar: rgba(0, 0, 0, 0.15);
   --color-shadow-card: rgba(79, 70, 229, 0.1);
 }
