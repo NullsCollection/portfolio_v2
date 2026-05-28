@@ -56,8 +56,8 @@ export function Projects() {
                 )}
 
                 {/* Gradient — subtle at rest, darkens on hover to make text readable */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent transition-opacity duration-400 group-hover:opacity-0" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/5 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/20 via-transparent to-transparent transition-opacity duration-400 group-hover:opacity-0" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 via-indigo-950/40 to-indigo-950/5 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
 
                 {/* All content — hidden at rest, slides up on hover */}
                 <div className="absolute inset-0 flex flex-col justify-end translate-y-4 opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100 p-5">
