@@ -93,7 +93,17 @@ export function Hero() {
               variants={fadeUp}
               className="text-lg font-normal tracking-tight text-muted md:text-xl"
             >
-              Web Developer | Graphic Designer | AI Automation
+              <span className="highlight-wrap">
+                <span>Web Developer</span>
+              </span>
+              {" | "}
+              <span className="highlight-wrap">
+                <span>Graphic Designer</span>
+              </span>
+              {" | "}
+              <span className="highlight-wrap">
+                <span>AI Automation</span>
+              </span>
             </motion.p>
 
             {/* Tagline */}

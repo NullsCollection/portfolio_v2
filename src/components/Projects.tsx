@@ -23,12 +23,12 @@ export function Projects() {
                 Projects
               </h2>
               <a
-                href="https://github.com/NullsCollection?tab=repositories"
+                href="https://www.oneclickpost.co/pages/workflows"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="shrink-0 text-sm text-muted transition-colors hover:text-text-primary"
               >
-                View all ↗
+                View all Automation Workflows ↗
               </a>
             </div>
           </div>

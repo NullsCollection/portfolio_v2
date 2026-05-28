@@ -37,9 +37,8 @@ export function About() {
                 freelance. I build fast web apps and automate the workflows
                 behind them — React frontends, Next.js APIs, and n8n pipelines
                 wired to AI.{" "}
-                <span className="text-white">
-                  {" "}
-                  If a process can be automated, I'll automate it.
+                <span className="highlight-wrap text-text-primary">
+                  <span>If a process can be automated, I'll automate it.</span>
                 </span>
               </p>
               <p className="text-base leading-relaxed text-muted">

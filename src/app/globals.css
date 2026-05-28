@@ -113,6 +113,27 @@ body {
   background-size: 16px 16px;
 }
 
+.highlight-wrap {
+  position: relative;
+  display: inline-block;
+}
+.highlight-wrap::before {
+  content: "";
+  position: absolute;
+  top: 40%;
+  right: 0;
+  bottom: 5%;
+  left: 20%;
+  background: var(--color-highlight);
+  transform: translate(3px, 4px);
+  z-index: 0;
+  pointer-events: none;
+}
+.highlight-wrap > span {
+  position: relative;
+  z-index: 1;
+}
+
 .chat-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--color-scrollbar) transparent;
