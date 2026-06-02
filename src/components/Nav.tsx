@@ -5,9 +5,9 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const NAV_LINKS = [
-  { label: "Work", href: "#projects" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work", href: "/#projects" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
 
 export function Nav() {
@@ -36,24 +36,24 @@ export function Nav() {
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6"
         aria-label="Primary navigation"
       >
-        <a
-          href="#"
+        <Link
+          href="/"
           className="text-sm font-semibold tracking-tight text-muted transition-opacity hover:opacity-70"
         >
           NullzCollection
-        </a>
+        </Link>
 
         {/* Desktop navigation */}
         <div className="hidden items-center gap-2 md:flex">
           <ul className="flex items-center gap-1" role="list">
             {NAV_LINKS.map(({ label, href }) => (
               <li key={label}>
-                <a
+                <Link
                   href={href}
                   className="rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:text-[var(--color-text-primary)]"
                 >
                   {label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -88,13 +88,13 @@ export function Nav() {
             <ul className="flex flex-col gap-1" role="list">
               {NAV_LINKS.map(({ label, href }) => (
                 <li key={label}>
-                  <a
+                  <Link
                     href={href}
                     onClick={closeMobileMenu}
                     className="block rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)]"
                   >
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -1,12 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { GitHubIcon } from "./icons/BrandIcons";
 import { projects } from "@/data/projects";
 import { AnimateIn } from "./AnimateIn";
 
 export function Projects() {
+  // Homepage bento shows a curated subset; the full archive lives at /projects
+  const bentoProjects = projects.slice(0, 7);
+
   return (
     <section id="projects" aria-labelledby="projects-heading" className="py-24">
       <div className="mx-auto max-w-6xl px-6">
@@ -22,21 +26,19 @@ export function Projects() {
               >
                 Projects
               </h2>
-              <a
-                href="https://www.oneclickpost.co/pages/workflows"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/projects"
                 className="shrink-0 text-sm text-muted transition-colors hover:text-text-primary"
               >
-                View all Automation Workflows ↗
-              </a>
+                View all projects ↗
+              </Link>
             </div>
           </div>
         </AnimateIn>
 
         {/* Bento grid — 3 cols desktop, 2 cols tablet, 1 col mobile */}
         <div className="grid auto-rows-[280px] grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {projects.map((project, i) => (
+          {bentoProjects.map((project, i) => (
             <AnimateIn
               key={project.id}
               delay={i * 0.07}
@@ -44,9 +46,9 @@ export function Projects() {
             >
               <article className="group relative h-full w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface">
                 {/* Image or placeholder */}
-                {project.image ? (
+                {project.cover ? (
                   <Image
-                    src={project.image}
+                    src={project.cover}
                     alt={project.name}
                     fill
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
