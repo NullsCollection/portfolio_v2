@@ -51,7 +51,7 @@ export const projects: Project[] = [
     role: "Full-stack developer",
     stack: ["Next.js", "TypeScript", "n8n", "Webhooks"],
     githubUrl:
-      "https://github.com/NullsCollection/social-media-post-custom-forms",
+      "https://github.com/NullsCollection/oneclickpost-monorepo",
     liveUrl: "https://oneclickpost.xyz/",
   },
   {
