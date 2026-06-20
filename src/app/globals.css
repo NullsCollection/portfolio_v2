@@ -82,6 +82,7 @@
 
   /* Misc */
   --color-dot-grid: rgba(255, 255, 255, 0.07);
+  --color-dot-grid-hover: rgba(129, 140, 248, 0.55);
   --color-scrollbar: rgba(255, 255, 255, 0.1);
   --color-shadow-card: rgba(79, 70, 229, 0.07);
 
@@ -105,12 +106,41 @@ body {
 
 /* ─── Utilities ───────────────────────────────────────────────────────────── */
 .dot-grid {
+  position: relative;
   background-image: radial-gradient(
     circle,
     var(--color-dot-grid) 1px,
     transparent 1px
   );
   background-size: 16px 16px;
+  /* viewport-anchored so the spotlight overlay aligns dot-for-dot */
+  background-attachment: fixed;
+}
+
+/* Cursor spotlight — brighter dots revealed near the pointer.
+   --spotlight-x/y are set on :root by <DotSpotlight />. */
+.dot-grid::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    var(--color-dot-grid-hover) 1px,
+    transparent 1px
+  );
+  background-size: 16px 16px;
+  -webkit-mask-image: radial-gradient(
+    circle 200px at var(--spotlight-x, -1000px) var(--spotlight-y, -1000px),
+    #000 0%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    circle 200px at var(--spotlight-x, -1000px) var(--spotlight-y, -1000px),
+    #000 0%,
+    transparent 70%
+  );
 }
 
 .highlight-wrap {

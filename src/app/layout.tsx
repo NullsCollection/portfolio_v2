@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { DotSpotlight } from "@/components/DotSpotlight";
 import "./globals.css";
 
 const inter = Inter({
@@ -70,7 +71,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <DotSpotlight />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

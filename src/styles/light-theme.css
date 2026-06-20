@@ -49,6 +49,7 @@ html[data-theme="light"] {
 
   /* Misc */
   --color-dot-grid: rgba(0, 0, 0, 0.12);
+  --color-dot-grid-hover: rgba(79, 70, 229, 0.5);
   --color-scrollbar: rgba(0, 0, 0, 0.15);
   --color-shadow-card: rgba(79, 70, 229, 0.1);
 }

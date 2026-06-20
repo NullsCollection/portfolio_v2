@@ -44,7 +44,14 @@ export function Projects() {
               delay={i * 0.07}
               className={project.featured ? "sm:col-span-2" : "col-span-1"}
             >
-              <article className="group relative h-full w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface">
+              <article className="group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface">
+                {/* Stretched link — whole card navigates to detail page */}
+                <Link
+                  href={`/projects/${project.id}`}
+                  aria-label={`View ${project.name}`}
+                  className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ring-offset-[var(--color-bg-base)]"
+                />
+
                 {/* Image or placeholder */}
                 {project.cover ? (
                   <Image
@@ -63,8 +70,8 @@ export function Projects() {
 
                 {/* All content — hidden at rest, slides up on hover */}
                 <div className="absolute inset-0 flex flex-col justify-end translate-y-4 opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100 p-5">
-                  {/* Links — top right */}
-                  <div className="absolute right-4 top-4 flex items-center gap-1.5">
+                  {/* Links — top right (above stretched link) */}
+                  <div className="absolute right-4 top-4 z-20 flex items-center gap-1.5">
                     {project.githubUrl && (
                       <a
                         href={project.githubUrl}
