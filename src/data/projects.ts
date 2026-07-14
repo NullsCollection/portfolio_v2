@@ -37,8 +37,9 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "n8n", "Webhooks"],
     description:
       "SaaS platform for automated social media posting — schedule, publish, and track across platforms from one dashboard.",
-    cover: `${P}/one-click-app/images.png`,
+    cover: `${P}/one-click-app/thumb.png`,
     images: [
+      `${P}/one-click-app/images.png`,
       `${P}/one-click-app/1.png`,
       `${P}/one-click-app/2.png`,
       `${P}/one-click-app/3.png`,

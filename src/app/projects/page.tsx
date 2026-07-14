@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Projects — Raffy Francisco",
   description:
     "Graphic design, UI/UX, frontend web development, and AI automation work by Raffy Francisco.",
+  alternates: { canonical: "/projects" },
 };
 
 export default function ProjectsPage() {

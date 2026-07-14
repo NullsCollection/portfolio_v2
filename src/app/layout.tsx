@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Raffy Francisco — Web Developer & Graphic Designer | AI Powered",
+  title: "Raffy Francisco - Web Developer & Graphic Designer | AI Powered",
   description:
     "Filipino Web Developer and Graphic Designer based remotely. Specializing in React, Next.js, TypeScript, and UI design. Available for freelance & full-time remote roles.",
   keywords: [
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     "Philippines",
   ],
   authors: [
-    { name: "Raffy Francisco", url: "https://www.nullscollection.art" },
+    { name: "Raffy Francisco", url: "https://www.nullscollection.tech" },
   ],
   creator: "Raffy Francisco",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.nullscollection.art",
+    url: "https://www.nullscollection.tech",
     title: "Raffy Francisco — Web Developer & Graphic Designer",
     description:
       "Filipino Web Developer and Graphic Designer. Available for freelance & full-time remote.",
@@ -47,7 +47,8 @@ export const metadata: Metadata = {
       "Filipino Web Developer and Graphic Designer. Available for freelance & full-time remote.",
   },
   robots: { index: true, follow: true },
-  metadataBase: new URL("https://www.nullscollection.art"),
+  metadataBase: new URL("https://www.nullscollection.tech"),
+  alternates: { canonical: "/" },
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -61,6 +62,16 @@ export const metadata: Metadata = {
   },
 };
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Raffy Francisco",
+  url: "https://www.nullscollection.tech",
+  jobTitle: "Web Developer & Graphic Designer",
+  knowsAbout: ["React", "Next.js", "TypeScript", "UI/UX Design", "n8n", "AI Automation"],
+  nationality: "Filipino",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -71,6 +82,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <ThemeProvider>
           <DotSpotlight />
           {children}

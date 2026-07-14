@@ -14,7 +14,7 @@ No test suite is configured.
 
 ## Architecture
 
-This is Raffy Francisco's personal portfolio site (`nullscollection.art`) — a single-page app with one additional route.
+This is Raffy Francisco's personal portfolio site (`nullscollection.tech`) — a single-page app with one additional route.
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · next-themes
 
