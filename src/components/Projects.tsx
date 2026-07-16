@@ -6,6 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { GitHubIcon } from "./icons/BrandIcons";
 import { projects } from "@/data/projects";
 import { AnimateIn } from "./AnimateIn";
+import { AskAIButton } from "./AskAIButton";
 
 export function Projects() {
   // Homepage bento shows a curated subset; the full archive lives at /projects
@@ -68,34 +69,36 @@ export function Projects() {
                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/20 via-transparent to-transparent transition-opacity duration-400 group-hover:opacity-0" />
                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 via-indigo-950/40 to-indigo-950/5 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
 
+                {/* Actions — top right (above stretched link). AskAI always
+                    visible for touch; external links reveal on hover */}
+                <div className="absolute right-4 top-4 z-20 flex items-center gap-1.5">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.name} on GitHub`}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 hover:text-white group-hover:opacity-100"
+                    >
+                      <GitHubIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.name} live site`}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 hover:text-white group-hover:opacity-100"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  )}
+                  <AskAIButton projectName={project.name} />
+                </div>
+
                 {/* All content — hidden at rest, slides up on hover */}
                 <div className="absolute inset-0 flex flex-col justify-end translate-y-4 opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100 p-5">
-                  {/* Links — top right (above stretched link) */}
-                  <div className="absolute right-4 top-4 z-20 flex items-center gap-1.5">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${project.name} on GitHub`}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 backdrop-blur-sm transition-colors hover:text-white"
-                      >
-                        <GitHubIcon className="h-4 w-4" />
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${project.name} live site`}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 backdrop-blur-sm transition-colors hover:text-white"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-
                   {/* Text content */}
                   <div className="flex flex-col gap-2">
                     <h3 className="text-sm font-semibold text-white">

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { CATEGORY_LABELS } from "@/data/projects";
+import { AskAIButton } from "@/components/AskAIButton";
 
 const ASPECT_CLASS: Record<NonNullable<Project["aspect"]>, string> = {
   portrait: "aspect-[3/4]",
@@ -13,11 +14,14 @@ export function ProjectCard({ project }: { project: Project }) {
   const aspect = ASPECT_CLASS[project.aspect ?? "landscape"];
 
   return (
-    <Link
-      href={`/projects/${project.id}`}
-      aria-label={`${project.name} — view project`}
-      className="group relative block w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface"
-    >
+    <div className="group relative block w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface">
+      {/* Stretched link — whole card navigates; keeps the AskAI button out of the anchor */}
+      <Link
+        href={`/projects/${project.id}`}
+        aria-label={`${project.name} — view project`}
+        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ring-offset-[var(--color-bg-base)]"
+      />
+
       <div className={`relative w-full ${aspect}`}>
         {project.cover ? (
           <Image
@@ -54,6 +58,12 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-    </Link>
+
+      {/* Always visible — works on touch, above the stretched link */}
+      <AskAIButton
+        projectName={project.name}
+        className="absolute right-3 top-3 z-20"
+      />
+    </div>
   );
 }

@@ -7,6 +7,7 @@ import { ArrowLeft, ExternalLink, ZoomIn } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { CATEGORY_LABELS } from "@/data/projects";
 import { GitHubIcon } from "@/components/icons/BrandIcons";
+import { AskAIButton } from "@/components/AskAIButton";
 import { Lightbox } from "./Lightbox";
 
 export function ProjectDetail({ project }: { project: Project }) {
@@ -48,40 +49,39 @@ export function ProjectDetail({ project }: { project: Project }) {
           </p>
 
           {/* Links */}
-          {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-            <div className="mt-5 flex flex-wrap gap-3">
-              {project.liveUrl && (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)]"
-                >
-                  <ExternalLink className="h-4 w-4" /> Live site
-                </a>
-              )}
-              {project.externalUrl && (
-                <a
-                  href={project.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-[var(--color-border-strong)]"
-                >
-                  <ExternalLink className="h-4 w-4" /> View on Behance
-                </a>
-              )}
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-[var(--color-border-strong)]"
-                >
-                  <GitHubIcon className="h-4 w-4" /> Code
-                </a>
-              )}
-            </div>
-          )}
+          <div className="mt-5 flex flex-wrap gap-3">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)]"
+              >
+                <ExternalLink className="h-4 w-4" /> Live site
+              </a>
+            )}
+            {project.externalUrl && (
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-[var(--color-border-strong)]"
+              >
+                <ExternalLink className="h-4 w-4" /> View on Behance
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-[var(--color-border-strong)]"
+              >
+                <GitHubIcon className="h-4 w-4" /> Code
+              </a>
+            )}
+            <AskAIButton variant="button" projectName={project.name} />
+          </div>
         </div>
 
         {/* Meta + tags */}

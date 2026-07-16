@@ -1,6 +1,7 @@
 import { Code2, Palette, Bot, Layers } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { AnimateIn } from "./AnimateIn";
+import { AskAIButton } from "./AskAIButton";
 
 const SPECIALIZATIONS = [
   { icon: Code2, label: "Web Development" },
@@ -59,6 +60,14 @@ export function About() {
                     {label}
                   </div>
                 ))}
+              </div>
+
+              <div>
+                <AskAIButton
+                  variant="button"
+                  label="Ask AI about my background"
+                  question="What's Raffy's background, skills, and work experience?"
+                />
               </div>
             </div>
           </AnimateIn>

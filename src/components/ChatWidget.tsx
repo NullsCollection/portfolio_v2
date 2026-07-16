@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Loader2, ChevronDown, RotateCcw } from "lucide-react";
 
@@ -13,6 +14,7 @@ interface Message {
 const uid = () => crypto.randomUUID();
 
 export function ChatWidget() {
+  const pathname = usePathname();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,16 +51,13 @@ export function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const sendMessage = useCallback(async () => {
-    const text = input.trim();
+  const sendText = useCallback(async (text: string) => {
     if (!text || isLoading) return;
 
     // Capture snapshot synchronously before any state updates to avoid stale closure
     const snapshot = messages;
     const userMsg: Message = { id: uid(), role: "user", content: text };
     setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    if (textareaRef.current) textareaRef.current.style.height = "auto";
     setIsLoading(true);
 
     try {
@@ -98,7 +97,28 @@ export function ChatWidget() {
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, messages]);
+  }, [isLoading, messages]);
+
+  const sendMessage = useCallback(() => {
+    const text = input.trim();
+    if (!text) return;
+    setInput("");
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
+    void sendText(text);
+  }, [input, sendText]);
+
+  // "Ask AI about this" buttons on project cards dispatch this event
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const question = (e as CustomEvent<{ question?: string }>).detail
+        ?.question;
+      if (!question) return;
+      setShowMessages(true);
+      void sendText(question);
+    };
+    window.addEventListener("ask-ai", handler);
+    return () => window.removeEventListener("ask-ai", handler);
+  }, [sendText]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -115,6 +135,9 @@ export function ChatWidget() {
   };
 
   const hasConversation = messages.length > 0;
+
+  // Widget is global (root layout) — keep it off the Cal.com booking page
+  if (pathname === "/book") return null;
 
   return (
     <div

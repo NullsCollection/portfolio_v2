@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { DotSpotlight } from "@/components/DotSpotlight";
+import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     "graphic designer",
     "Automation",
     "n8n",
+    "Go",
     "Next.js",
     "React",
     "TypeScript",
@@ -89,6 +91,7 @@ export default function RootLayout({
         <ThemeProvider>
           <DotSpotlight />
           {children}
+          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>

@@ -3,6 +3,42 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { groq } from "@/lib/groq";
 import { AI_SYSTEM_PROMPT } from "@/data/ai-context";
+import { projects, CATEGORY_LABELS } from "@/data/projects";
+import { PROJECT_KNOWLEDGE } from "@/data/project-knowledge";
+
+// ─── Portfolio knowledge block ───────────────────────────────────────────────
+// Structured facts from projects.ts merged with hand-written prose from
+// project-knowledge.ts. Built once at module load, appended to every request.
+// No retrieval — 12 projects fit comfortably in the prompt.
+
+for (const id of Object.keys(PROJECT_KNOWLEDGE)) {
+  if (!projects.some((p) => p.id === id)) {
+    console.warn(`[api/chat] PROJECT_KNOWLEDGE key "${id}" matches no project`);
+  }
+}
+
+const PORTFOLIO_BLOCK = [
+  "\n## PORTFOLIO PROJECTS",
+  "These are the projects shown on the site's Projects section (each lives at nullscollection.tech/projects/{id}). Use this as the source of truth when a visitor asks about a specific project:",
+  ...projects.map((p) => {
+    const facts = [
+      `### ${p.name}`,
+      `Category: ${CATEGORY_LABELS[p.category]}`,
+      p.description,
+      p.role && `Raffy's role: ${p.role}`,
+      p.year && `Year: ${p.year}`,
+      p.client && `Client: ${p.client}`,
+      p.stack?.length && `Stack: ${p.stack.join(", ")}`,
+      p.liveUrl && `Live: ${p.liveUrl}`,
+      p.githubUrl && `Code: ${p.githubUrl}`,
+      p.externalUrl && `Case study: ${p.externalUrl}`,
+      PROJECT_KNOWLEDGE[p.id],
+    ];
+    return facts.filter(Boolean).join("\n");
+  }),
+].join("\n\n");
+
+const SYSTEM_PROMPT = AI_SYSTEM_PROMPT + PORTFOLIO_BLOCK;
 
 // ─── Rate limiter (Upstash Redis — survives cold starts & multi-instance) ────
 // Falls back to a no-op when env vars are absent (local dev without Redis).
@@ -67,12 +103,18 @@ export async function POST(req: NextRequest) {
     "unknown";
 
   if (ratelimit) {
-    const { success, remaining } = await ratelimit.limit(ip);
-    if (!success) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again in an hour." },
-        { status: 429, headers: { "X-RateLimit-Remaining": String(remaining) } },
-      );
+    // Fail open: a dead/deleted Redis must not take the chatbot down.
+    // (Upstash deletes free databases after 14 days of inactivity.)
+    try {
+      const { success, remaining } = await ratelimit.limit(ip);
+      if (!success) {
+        return NextResponse.json(
+          { error: "Too many requests. Please try again in an hour." },
+          { status: 429, headers: { "X-RateLimit-Remaining": String(remaining) } },
+        );
+      }
+    } catch (err) {
+      console.error("[api/chat] rate limiter unreachable, failing open:", err);
     }
   }
 
@@ -116,7 +158,7 @@ export async function POST(req: NextRequest) {
       model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
       max_tokens: 512,
       messages: [
-        { role: "system", content: AI_SYSTEM_PROMPT },
+        { role: "system", content: SYSTEM_PROMPT },
         ...sanitized,
       ],
     });

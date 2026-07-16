@@ -47,44 +47,14 @@ when greeted.
 - Designed sublimation clothing graphics and branding materials
 - Used Adobe Illustrator for vector and print-ready artwork
 
-## PROJECTS
-
-### OneClickPost (oneclickpost.co)
-- Raffy's flagship SaaS product — a cross-platform social media automation app
-- Lets users publish content to Facebook, Instagram, LinkedIn, and X in one click
-- Has three posting modes: Manual, AI-assisted, and Video
-- Built with React, TypeScript, Tailwind CSS, and a self-hosted n8n backend
-- Raffy built and maintains the entire product himself — from automation workflows to the frontend UI
-- Demonstrates his full-stack capability: product design, frontend development, and backend automation end-to-end
-
-### Jarvis — Voice AI Appointment Scheduling System (Prime Tech Guyana)
-- A fully voice-based AI receptionist built for a Guyanese security technology company
-- Handles appointment scheduling, rescheduling, and cancellations entirely through natural conversation
-- Built using Vapi (voice AI), n8n (workflow automation), Google Calendar, and Google Sheets
-- Features real-time slot checking and phone-number-based booking confirmation
-- Demonstrates Raffy's ability to deliver production-grade AI automation for international clients
-
-### WhatsApp Appointment Scheduling Bot
-- A conversational appointment bot delivered over WhatsApp
-- Allows end-users to book, reschedule, and cancel appointments via chat
-- Built with n8n, Twilio, and Google Calendar
-- Showcases Raffy's ability to build client-facing automation on widely-used messaging platforms
-
-### RB7 Back-Office Dashboard
-- Admin dashboard built for a lottery/gaming platform
-- Covers reporting pages, round management, and award result workflows
-- Built with vanilla HTML, CSS, and JavaScript using a dark-luxury gold aesthetic
-- Demonstrates Raffy's ability to build internal tools and data-heavy admin UIs
-
 ## SKILLS
 
-Design: Figma, Adobe Illustrator, Adobe Photoshop, Canva
+Design: Figma, Adobe Illustrator, Adobe Photoshop, 
 Frontend: React, Next.js, TypeScript, Tailwind CSS, Vite, Vanilla HTML/CSS/JS
 Automation: n8n (self-hosted), Make.com, Vapi, workflow design, API integrations
-AI & Agents: Voice AI (Vapi), AI agent pipelines, OpenRouter, LLM prompt engineering
+AI & Agents: Voice AI (Vapi), AI agent pipelines, OpenRouter, LLM Loop engineering
 Backend Exposure: Go, REST APIs, PostgreSQL, Supabase
-Tools: Git, Bitbucket, Trello, Slack, Google Drive, Vercel, Google Calendar API
-Ads & Marketing: Meta Ads Manager
+Tools: Git, Bitbucket, Trello, Slack, Google Drive, Vercel
 Other: UI/UX Design, Responsive Web Design, Print Design, Social Media Systems
 
 ## BRAND & FREELANCE POSITIONING
@@ -99,7 +69,7 @@ Other: UI/UX Design, Responsive Web Design, Print Design, Social Media Systems
 - Timezone: PHT (UTC+8), flexible for async work
 - Working hours: Flexible, available for overlap with US, EU, AU clients
 - Open to: Freelance projects, full-time remote roles
-- Project types: Web development, automation workflows, graphic design,
+- Project types: Web development, AI Automation workflows, graphic design,
   UI/UX, social media systems, voice AI, appointment bots
 - Rates: Available on request — reach out at raffy7792@gmail.com
 

@@ -4,7 +4,6 @@ import { Experience } from "@/components/Experience";
 import { Projects } from "@/components/Projects";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
-import { ChatWidget } from "@/components/ChatWidget";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
@@ -55,7 +54,6 @@ export default function Home() {
       </footer> */}
 
       {/* Floating elements — outside main for stacking context */}
-      <ChatWidget />
       <ThemeToggle />
     </>
   );

@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Download } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "./icons/BrandIcons";
 import Image from "next/image";
+import { AskAIButton } from "./AskAIButton";
 
 const SOCIAL_LINKS = [
   {
@@ -151,6 +152,11 @@ export function Hero() {
                 Download CV
                 <Download className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
+              <AskAIButton
+                variant="button"
+                label="Ask AI about me"
+                question="Who is Raffy Francisco and what does he do?"
+              />
             </motion.div>
 
             {/* Social links */}
