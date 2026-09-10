@@ -13,8 +13,8 @@ export const experiences: Experience[] = [
   {
     id: "kitcode",
     index: "01",
-    period: "2025 — Present",
-    role: "Web Designer / Developer",
+    period: "2025 - Present",
+    role: "Frontend Engineer & UI/UX",
     employmentType: "Freelance",
     company: "KitCode",
     companyUrl: "https://kitcodeinnovation.co.th/",
@@ -24,7 +24,7 @@ export const experiences: Experience[] = [
   {
     id: "zeinous",
     index: "02",
-    period: "2023 — 2025",
+    period: "2023 - 2025",
     role: "Graphic Designer",
     employmentType: "Full-time",
     company: "Zeinous",
@@ -35,7 +35,7 @@ export const experiences: Experience[] = [
   {
     id: "bgk",
     index: "03",
-    period: "2021 — 2023",
+    period: "2021 - 2023",
     role: "Graphic Designer",
     employmentType: "Full-time",
     company: "BGK Printing Services",

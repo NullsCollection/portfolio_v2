@@ -30,9 +30,8 @@ const SPECIALTIES = [
   { label: "n8n Automation" },
   { label: "Figma" },
   { label: "Adobe Illustrator" },
-  { label: "Go" },
+  { label: "Go + Gin" },
   { label: "Photoshop" },
-  { label: "AI Specialist" },
   { label: "Minimalist" },
 ] as const;
 
