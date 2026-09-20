@@ -58,12 +58,14 @@ let ratelimitDown = false;
 const RATELIMIT_RETRY_MS = 5 * 60 * 1000;
 
 // ─── Model ───────────────────────────────────────────────────────────────────
-// Groq retires models regularly — check https://console.groq.com/docs/models
-// (or GET /openai/v1/models with your key) if this ever 404s.
-const MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
+// GROQ_MODEL is the single source of truth — no hardcoded fallback, so prod can
+// never silently run a model nobody picked. Groq retires models regularly; when
+// this 404s, check https://console.groq.com/docs/models (or GET
+// /openai/v1/models with your key) and update the env var.
+const MODEL = process.env.GROQ_MODEL;
 // gpt-oss models spend tokens on hidden reasoning before answering; keep it low
 // so the visible answer doesn't get cut off by max_tokens.
-const IS_REASONING_MODEL = MODEL.startsWith("openai/gpt-oss");
+const IS_REASONING_MODEL = MODEL?.startsWith("openai/gpt-oss") ?? false;
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
 const PRODUCTION_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL;
@@ -167,6 +169,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: "No valid messages provided." },
       { status: 400 },
+    );
+  }
+
+  if (!MODEL) {
+    console.error("[api/chat] GROQ_MODEL is not set — refusing to guess a model.");
+    return NextResponse.json(
+      { error: "Chat isn't configured right now. Reach out at raffy7792@gmail.com." },
+      { status: 500 },
     );
   }
 
