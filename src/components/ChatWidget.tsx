@@ -5,6 +5,11 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Loader2, ChevronDown, RotateCcw } from "lucide-react";
 
+import { ChatMessageText } from "./ChatMessageText";
+
+/** Thrown when /api/chat responds with a non-2xx and a visitor-facing message. */
+class ApiError extends Error {}
+
 interface Message {
   id: string;
   role: "user" | "assistant";
@@ -51,53 +56,58 @@ export function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const sendText = useCallback(async (text: string) => {
-    if (!text || isLoading) return;
+  const sendText = useCallback(
+    async (text: string) => {
+      if (!text || isLoading) return;
 
-    // Capture snapshot synchronously before any state updates to avoid stale closure
-    const snapshot = messages;
-    const userMsg: Message = { id: uid(), role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
-    setIsLoading(true);
+      // Capture snapshot synchronously before any state updates to avoid stale closure
+      const snapshot = messages;
+      const userMsg: Message = { id: uid(), role: "user", content: text };
+      setMessages((prev) => [...prev, userMsg]);
+      setIsLoading(true);
 
-    try {
-      const history = [...snapshot, userMsg].map(({ role, content }) => ({
-        role,
-        content,
-      }));
+      try {
+        const history = [...snapshot, userMsg].map(({ role, content }) => ({
+          role,
+          content,
+        }));
 
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
-      });
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history }),
+        });
 
-      if (!res.ok) {
-        const data = (await res.json()) as { error?: string };
-        throw new Error(data.error ?? "Request failed");
+        if (!res.ok) {
+          const data = (await res.json().catch(() => ({}))) as { error?: string };
+          throw new ApiError(data.error ?? "Request failed");
+        }
+
+        const data = (await res.json()) as { reply: string };
+        setMessages((prev) => [
+          ...prev,
+          { id: uid(), role: "assistant", content: data.reply },
+        ]);
+      } catch (err) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: uid(),
+            role: "assistant",
+            // Server-side messages are already written for visitors; show them
+            // as-is. The generic line is for network failures only.
+            content:
+              err instanceof ApiError
+                ? err.message
+                : "I couldn't process that at the moment. I'm sorry. Please reach out directly at raffy7792@gmail.com.",
+          },
+        ]);
+      } finally {
+        setIsLoading(false);
       }
-
-      const data = (await res.json()) as { reply: string };
-      setMessages((prev) => [
-        ...prev,
-        { id: uid(), role: "assistant", content: data.reply },
-      ]);
-    } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: uid(),
-          role: "assistant",
-          content:
-            err instanceof Error && err.message.includes("Too many")
-              ? "You've hit the rate limit. Try again in an hour!"
-              : "I couldn't process that. Reach out directly at raffy7792@gmail.com.",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoading, messages]);
+    },
+    [isLoading, messages],
+  );
 
   const sendMessage = useCallback(() => {
     const text = input.trim();
@@ -187,7 +197,11 @@ export function ChatWidget() {
                         : "mr-auto bg-surface text-[var(--color-text-primary)]",
                     ].join(" ")}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" ? (
+                      <ChatMessageText text={msg.content} />
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                 ))}
 

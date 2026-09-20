@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import Groq from "groq-sdk";
 import { groq } from "@/lib/groq";
 import { AI_SYSTEM_PROMPT } from "@/data/ai-context";
 import { projects, CATEGORY_LABELS } from "@/data/projects";
@@ -52,6 +53,18 @@ const ratelimit =
       })
     : null;
 
+// Tripped when Redis is unreachable, reset after a cooldown.
+let ratelimitDown = false;
+const RATELIMIT_RETRY_MS = 5 * 60 * 1000;
+
+// ─── Model ───────────────────────────────────────────────────────────────────
+// Groq retires models regularly — check https://console.groq.com/docs/models
+// (or GET /openai/v1/models with your key) if this ever 404s.
+const MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
+// gpt-oss models spend tokens on hidden reasoning before answering; keep it low
+// so the visible answer doesn't get cut off by max_tokens.
+const IS_REASONING_MODEL = MODEL.startsWith("openai/gpt-oss");
+
 // ─── CORS ────────────────────────────────────────────────────────────────────
 const PRODUCTION_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -102,7 +115,7 @@ export async function POST(req: NextRequest) {
     req.headers.get("x-real-ip") ??
     "unknown";
 
-  if (ratelimit) {
+  if (ratelimit && !ratelimitDown) {
     // Fail open: a dead/deleted Redis must not take the chatbot down.
     // (Upstash deletes free databases after 14 days of inactivity.)
     try {
@@ -114,6 +127,10 @@ export async function POST(req: NextRequest) {
         );
       }
     } catch (err) {
+      // Don't retry a dead Redis on every request — each attempt costs a DNS
+      // timeout (seconds) on the user's response.
+      ratelimitDown = true;
+      setTimeout(() => (ratelimitDown = false), RATELIMIT_RETRY_MS).unref?.();
       console.error("[api/chat] rate limiter unreachable, failing open:", err);
     }
   }
@@ -155,19 +172,37 @@ export async function POST(req: NextRequest) {
 
   try {
     const completion = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
-      max_tokens: 512,
+      model: MODEL,
+      max_tokens: 1024,
+      ...(IS_REASONING_MODEL ? { reasoning_effort: "low" as const } : {}),
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...sanitized,
       ],
     });
 
-    const reply = completion.choices[0]?.message?.content ?? "";
+    const reply = completion.choices[0]?.message?.content?.trim();
+
+    if (!reply) {
+      console.error("[api/chat] empty completion:", completion.choices[0]);
+      return NextResponse.json(
+        { error: "Failed to generate a response. Please try again." },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({ reply });
   } catch (err) {
     console.error("[api/chat] Groq error:", err);
+
+    // Groq's own per-minute limit — tell the visitor to wait, don't cry "broken".
+    if (err instanceof Groq.APIError && err.status === 429) {
+      return NextResponse.json(
+        { error: "Getting a lot of questions right now — try again in a few seconds." },
+        { status: 429 },
+      );
+    }
+
     return NextResponse.json(
       { error: "Failed to generate a response. Please try again." },
       { status: 500 },
