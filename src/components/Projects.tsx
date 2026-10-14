@@ -4,19 +4,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { GitHubIcon } from "./icons/BrandIcons";
-import { projects } from "@/data/projects";
+import { CATEGORY_LABELS, projects } from "@/data/projects";
 import { AnimateIn } from "./AnimateIn";
 import { AskAIButton } from "./AskAIButton";
 import { Band } from "./Band";
 
 export function Projects() {
-  // Homepage bento shows a curated subset; the full archive lives at /projects
-  const bentoProjects = projects.slice(0, 7);
+  // Bento: 3 wide + 3 single cards fill exactly three rows of the 3-column
+  // grid. Everything else is a compact row underneath; the full archive
+  // lives at /projects.
+  const bentoProjects = projects.slice(0, 6);
+  const rowProjects = projects.slice(6);
 
   return (
     <Band id="projects" name="Work">
       {/* Bento grid — 3 cols desktop, 2 cols tablet, 1 col mobile */}
-      <div className="grid auto-rows-[280px] grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid auto-rows-[280px] grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:grid-flow-dense">
         {bentoProjects.map((project, i) => (
           <AnimateIn
             key={project.id}
@@ -37,6 +40,11 @@ export function Projects() {
                   src={project.cover}
                   alt={project.name}
                   fill
+                  sizes={
+                    project.featured
+                      ? "(min-width: 768px) 580px, 100vw"
+                      : "(min-width: 768px) 290px, (min-width: 640px) 50vw, 100vw"
+                  }
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                 />
               ) : (
@@ -101,6 +109,35 @@ export function Projects() {
           </AnimateIn>
         ))}
       </div>
+
+      {/* The rest, as quiet rows — the full range without a wall of cards. */}
+      <ul
+        role="list"
+        className="mt-[46px] border-t border-[var(--color-border-subtle)]"
+      >
+        {rowProjects.map((project) => (
+          <li
+            key={project.id}
+            className="border-b border-[var(--color-border-subtle)]"
+          >
+            <Link
+              href={`/projects/${project.id}`}
+              className="group grid grid-cols-[1fr_auto_16px] items-baseline gap-4 py-[13px] text-text-primary motion-safe:transition-[padding] motion-safe:duration-200 motion-safe:hover:pl-[9px]"
+            >
+              <span className="text-[14.5px]">{project.name}</span>
+              <span className="text-[13px] text-text-muted max-[620px]:hidden">
+                {CATEGORY_LABELS[project.category]}
+              </span>
+              <span
+                aria-hidden="true"
+                className="font-mono text-xs text-text-muted transition-colors group-hover:text-[var(--color-text-accent)]"
+              >
+                →
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
 
       <Link
         href="/projects"
