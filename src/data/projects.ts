@@ -13,6 +13,8 @@ export interface Project {
   category: ProjectCategory;
   tags: string[];
   description: string;
+  /** Short homepage caption. Falls back to `description`. */
+  summary?: string;
   cover: string;
   images?: string[];
   aspect?: "portrait" | "landscape" | "square";
@@ -50,6 +52,8 @@ export const projects: Project[] = [
     description:
       "UI/UX overhaul and front-end build of the admin dashboard behind a lottery platform — 69 screens, two brands, light and dark.",
     cover: `${P}/lottery-backoffice/cover.png`,
+    summary:
+      "Redesigned and built the admin app behind a lottery platform. 69 screens, two brands, light and dark.",
     images: [
       `${P}/lottery-backoffice/cover.png`,
       `${P}/lottery-backoffice/themes.webp`,
@@ -95,6 +99,8 @@ export const projects: Project[] = [
     description:
       "SaaS platform for automated social media posting — schedule, publish, and track across platforms from one dashboard.",
     cover: `${P}/one-click-app/thumb.png`,
+    summary:
+      "A SaaS that publishes to four social platforms at once. I built it, I run it, I pay the bill.",
     images: [
       `${P}/one-click-app/images.png`,
       `${P}/one-click-app/1.png`,
@@ -190,6 +196,8 @@ export const projects: Project[] = [
     description:
       "UI/UX design for a live-streaming gaming application with a dark theme and dynamic visual elements.",
     cover: `${P}/GameUI/Artboard-1.png`,
+    summary:
+      "Interface system for a game streaming platform, designed end to end in Figma.",
     images: [
       `${P}/GameUI/Artboard-1.png`,
       `${P}/GameUI/Artboard%202.png`,
