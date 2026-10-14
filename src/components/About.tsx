@@ -1,55 +1,39 @@
 import Image from "next/image";
-import { Code2, Palette, Bot, Layers } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { AnimateIn } from "./AnimateIn";
-import { Band } from "./Band";
 import { AskAIButton } from "./AskAIButton";
+import { Band } from "./Band";
 
-const SPECIALIZATIONS = [
-  { icon: Code2, label: "Web Development" },
-  { icon: Palette, label: "UI Design" },
-  { icon: Bot, label: "AI Automation" },
-  { icon: Layers, label: "Brand Design" },
-] as const;
-
+/**
+ * Two paragraphs of prose, skills as three readable lines (not a wall of
+ * chips), and the photo that used to sit in the hero.
+ */
 export function About() {
   return (
     <Band id="about" name="About">
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-        {/* Bio column */}
-        <AnimateIn>
-          <div className="flex flex-col gap-5">
-            <p className="text-base leading-relaxed text-muted">
-              I&apos;m a Filipino web developer and automation engineer with five
-              years of experience shipping products across agencies and
-              freelance. I build fast web apps and automate the workflows
-              behind them — React frontends, Next.js APIs, and n8n pipelines
-              wired to AI.{" "}
-              <span className="highlight-wrap text-text-primary">
-                <span>If a process can be automated, I&apos;ll automate it.</span>
-              </span>
+      <AnimateIn>
+        <div className="grid grid-cols-[1fr_232px] items-start gap-10 max-[860px]:grid-cols-1 max-[860px]:gap-7">
+          <div className="min-w-0">
+            <p className="mb-[17px] max-w-[60ch] text-pretty text-[15px] leading-[1.65] text-text-secondary">
+              I&apos;m a Filipino developer and designer with five years
+              shipping across agencies and freelance. I write React and Next.js
+              frontends, Go APIs, and n8n pipelines to automate the rest.
             </p>
-            <p className="text-base leading-relaxed text-muted">
-              Currently open to freelance projects and full-time remote roles.
+            <p className="mb-[17px] max-w-[60ch] text-pretty text-[15px] leading-[1.65] text-text-secondary">
+              Design isn&apos;t a footnote — I spent four years in identity and
+              print before moving into engineering, so I take things from an
+              empty Figma file to a deployed app with no handoff in between.
             </p>
 
-            {/* Specialization pills */}
-            <div className="flex flex-wrap gap-2 pt-1">
-              {SPECIALIZATIONS.map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-3 py-1.5 text-sm text-[var(--color-text-secondary)]"
-                >
-                  <Icon
-                    className="h-3.5 w-3.5 text-secondary"
-                    aria-hidden="true"
-                  />
-                  {label}
-                </div>
+            <p className="border-t border-[var(--color-border-subtle)] pt-[7px] text-[13.5px] leading-[1.95] text-text-muted">
+              {skillGroups.map(({ category, skills }) => (
+                <span key={category} className="block">
+                  {category} — {skills.join(", ")}.
+                </span>
               ))}
-            </div>
+            </p>
 
-            <div>
+            <div className="mt-6">
               <AskAIButton
                 variant="button"
                 label="Ask AI about my background"
@@ -57,41 +41,18 @@ export function About() {
               />
             </div>
           </div>
-        </AnimateIn>
 
-        {/* Skills column — the profile photo moved here from the Hero.
-            Phase 8 rebuilds this column; the photo stays. */}
-        <AnimateIn delay={0.12}>
-          <div className="flex flex-col gap-7">
-            <figure className="relative aspect-square w-[232px] overflow-hidden rounded-[10px] border border-[var(--color-border)] bg-[var(--color-bg-input)] max-[860px]:w-[200px]">
-              <Image
-                src="/assets/Profile.png"
-                alt="Raffy Francisco"
-                fill
-                sizes="232px"
-                className="object-cover"
-              />
-            </figure>
-            {skillGroups.map(({ category, skills }) => (
-              <div key={category}>
-                <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">
-                  {category}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="rounded-full bg-surface px-2.5 py-1 text-xs text-muted border border-[var(--color-border)]"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </AnimateIn>
-      </div>
+          <figure className="relative aspect-square w-full overflow-hidden rounded-[10px] border border-[var(--color-border)] bg-[var(--color-bg-input)] max-[860px]:max-w-[200px]">
+            <Image
+              src="/assets/Profile.png"
+              alt="Raffy Francisco"
+              fill
+              sizes="232px"
+              className="object-cover"
+            />
+          </figure>
+        </div>
+      </AnimateIn>
     </Band>
   );
 }

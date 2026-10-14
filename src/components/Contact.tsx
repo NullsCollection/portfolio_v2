@@ -1,51 +1,45 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import {
-  Send,
-  Mail,
-  MessageCircle,
-  ArrowRight,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
-import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "./icons/BrandIcons";
+import { ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { AnimateIn } from "./AnimateIn";
 import { Band } from "./Band";
 import { submitContact } from "@/app/actions/contact";
 
-const SOCIAL_LINKS = [
+const CONTACT_LINKS = [
   {
     href: "mailto:raffy7792@gmail.com",
-    Icon: Mail,
     label: "Email",
     display: "raffy7792@gmail.com",
   },
   {
     href: "https://wa.me/639600723886",
-    Icon: WhatsAppIcon,
     label: "WhatsApp",
     display: "+63 960 072 3886",
   },
   {
-    href: "https://github.com/NullsCollection?tab=repositories",
-    Icon: GitHubIcon,
-    label: "GitHub",
-    display: "NullsCollection",
-  },
-  {
     href: "https://www.linkedin.com/in/raffy-francisco-50607b325/",
-    Icon: LinkedInIcon,
     label: "LinkedIn",
     display: "raffy-francisco",
+  },
+  {
+    href: "https://github.com/NullsCollection?tab=repositories",
+    label: "GitHub",
+    display: "NullsCollection",
   },
 ] as const;
 
 type FormStatus = "idle" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-input)] px-4 py-2.5 text-sm text-[var(--color-text-primary)] placeholder:text-muted transition-colors focus:border-secondary/50 focus:bg-[var(--color-bg-input)] focus:outline-none focus:ring-1 focus:ring-secondary/30";
+  "w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-input)] px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-subtle)]";
 
+const labelClass = "mb-1.5 block text-[13px] text-text-muted";
+
+/**
+ * One-line lede, the form (behaviour unchanged), and direct lines as a
+ * hairline list. Bottom padding keeps the chat dock off the last row.
+ */
 export function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -76,21 +70,32 @@ export function Contact() {
 
   return (
     <Band id="contact" name="Contact" className="pb-28">
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-        {/* Form */}
-        <AnimateIn>
+      <AnimateIn>
+        <p className="mb-[26px] max-w-[44ch] text-pretty text-[clamp(1.0625rem,1.7vw,1.25rem)] leading-normal text-text-primary">
+          Tell me what you&apos;re building and when you need it. I answer
+          within a day.
+        </p>
+
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] items-start gap-12 max-[860px]:grid-cols-1 max-[860px]:gap-10">
           {status === "success" ? (
-            <div className="flex h-full flex-col items-center justify-center gap-4 rounded-xl border border-[var(--color-status-success)]/20 bg-[var(--color-status-success-bg)] p-8 text-center">
-              <CheckCircle className="h-8 w-8 text-[var(--color-status-success)]" />
+            <div
+              role="status"
+              className="flex flex-col items-start gap-3 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-status-success-bg)] p-6"
+            >
+              <CheckCircle
+                className="h-6 w-6 text-[var(--color-status-success)]"
+                aria-hidden="true"
+              />
               <div>
-                <p className="font-medium text-white">Message sent.</p>
-                <p className="mt-1 text-sm text-muted">
+                <p className="font-medium text-text-primary">Message sent.</p>
+                <p className="mt-1 text-sm text-text-secondary">
                   I&apos;ll get back to you within 24 hours.
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => setStatus("idle")}
-                className="text-sm text-muted underline-offset-2 hover:text-white hover:underline"
+                className="cursor-pointer text-sm text-text-muted underline-offset-2 transition-colors hover:text-text-primary hover:underline"
               >
                 Send another
               </button>
@@ -101,49 +106,41 @@ export function Contact() {
               noValidate
               className="flex flex-col gap-4"
             >
-              <div>
-                <label
-                  htmlFor="name"
-                  className="mb-1.5 block text-xs font-medium text-muted"
-                >
-                  Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name"
-                  className={inputClass}
-                />
+              <div className="grid grid-cols-2 gap-4 max-[620px]:grid-cols-1">
+                <div>
+                  <label htmlFor="name" className={labelClass}>
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your name"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className={labelClass}>
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className={inputClass}
+                  />
+                </div>
               </div>
 
               <div>
-                <label
-                  htmlFor="email"
-                  className="mb-1.5 block text-xs font-medium text-muted"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="mb-1.5 block text-xs font-medium text-muted"
-                >
+                <label htmlFor="message" className={labelClass}>
                   Message
                 </label>
                 <textarea
@@ -152,13 +149,16 @@ export function Contact() {
                   rows={5}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="What are you working on?"
+                  placeholder="What are you working on, and when do you need it?"
                   className={`${inputClass} resize-none`}
                 />
               </div>
 
               {status === "error" && (
-                <div className="flex items-start gap-2 rounded-lg border border-[var(--color-status-error)]/20 bg-[var(--color-status-error-bg)] p-3 text-sm text-[var(--color-status-error)]">
+                <div
+                  role="alert"
+                  className="flex items-start gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-status-error-bg)] p-3 text-sm text-[var(--color-status-error)]"
+                >
                   <AlertCircle
                     className="mt-0.5 h-4 w-4 shrink-0"
                     aria-hidden="true"
@@ -167,82 +167,60 @@ export function Contact() {
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={isPending}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isPending ? "Sending…" : "Send Message"}
-                {!isPending && (
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="inline-flex h-[38px] cursor-pointer items-center gap-2 rounded-lg bg-[var(--color-accent)] px-4 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isPending ? "Sending…" : "Send message"}
+                  {!isPending && (
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
             </form>
           )}
-        </AnimateIn>
 
-        {/* Sidebar */}
-        <AnimateIn delay={0.12}>
-          <div className="flex flex-col gap-8">
-            <div>
-              <p className="mb-4 text-sm leading-relaxed text-text-primary">
-                Prefer a faster response? Reach out directly — I check
-                everything daily.
-              </p>
-              <ul className="flex flex-col gap-3" role="list">
-                {SOCIAL_LINKS.map(({ href, Icon, label, display }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      target={
-                        href.startsWith("mailto") ? undefined : "_blank"
-                      }
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-3 text-sm text-muted transition-colors hover:text-text-accent"
-                    >
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] transition-colors group-hover:border-[var(--color-border-strong)]">
-                        <Icon className="h-3.5 w-3.5" />
-                      </span>
-                      <span>
-                        <span className="mr-2 font-medium text-text-primary">
-                          {label}
-                        </span>
-                        {display}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div>
+            <ul
+              role="list"
+              className="border-t border-[var(--color-border-subtle)]"
+            >
+              {CONTACT_LINKS.map(({ href, label, display }) => (
+                <li
+                  key={label}
+                  className="border-b border-[var(--color-border-subtle)]"
+                >
+                  <a
+                    href={href}
+                    target={href.startsWith("mailto") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    className="grid grid-cols-[88px_1fr] items-baseline gap-3 py-3 text-[14.5px] text-text-secondary hover:text-text-primary motion-safe:transition-[padding,color] motion-safe:duration-200 motion-safe:hover:pl-[9px]"
+                  >
+                    <span className="text-text-primary">{label}</span>
+                    <span className="truncate">{display}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-            {/* AI chat CTA */}
-            <div className="rounded-xl border border-secondary/20 bg-secondary/5 p-5">
-              <div className="mb-3 flex items-center gap-2">
-                <MessageCircle
-                  className="h-4 w-4 text-secondary"
-                  aria-hidden="true"
-                />
-                <p className="text-sm font-medium text-text-primary">
-                  Have a quick question?
-                </p>
-              </div>
-              <p className="mb-4 text-xs leading-relaxed text-muted">
-                Chat with my AI assistant for instant answers about my skills,
-                availability, and projects.
-              </p>
-              <button
-                onClick={() =>
-                  window.dispatchEvent(new CustomEvent("open-chat-widget"))
-                }
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-white"
-              >
-                Chat with my AI assistant
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("open-chat-widget"))
+              }
+              className="group mt-5 inline-flex cursor-pointer items-center gap-2 text-sm text-text-muted transition-colors hover:text-text-primary"
+            >
+              Quick question? Ask my AI assistant
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </button>
           </div>
-        </AnimateIn>
-      </div>
+        </div>
+      </AnimateIn>
     </Band>
   );
 }

@@ -3,24 +3,19 @@ export interface SkillGroup {
   skills: string[];
 }
 
+/** About section: three plain lines, not chips. */
 export const skillGroups: SkillGroup[] = [
   {
     category: "Design",
-    skills: [
-      "Figma",
-      "Adobe Illustrator",
-      "Photoshop",
-      "Typography",
-      "Brand Identity",
-    ],
+    skills: ["Figma", "Illustrator", "Photoshop", "typography", "brand identity"],
   },
   {
-    category: "Frontend",
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    category: "Engineering",
+    skills: ["React", "Next.js", "TypeScript", "Go", "Laravel", "PostgreSQL"],
   },
   {
-    category: "Tools",
-    skills: ["Git", "Railway", "Vercel", "Slack", "Bitbucket", "Trello", "n8n"],
+    category: "Automation",
+    skills: ["n8n", "Vapi", "webhooks", "LLM pipelines"],
   },
 ];
 
