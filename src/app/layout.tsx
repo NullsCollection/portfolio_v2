@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Mono, Instrument_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { DotSpotlight } from "@/components/DotSpotlight";
 import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
-const inter = Inter({
+// Two voices: Instrument Sans for anything a person wrote, DM Mono for
+// anything a machine produced (dates, counts, stack lists, commands).
+// Loaded as a variable font so in-between weights like 650 work.
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-instrument",
+  display: "swap",
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-dm-mono",
   display: "swap",
 });
 
@@ -80,10 +90,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full scroll-smooth antialiased`}
+      className={`${instrumentSans.variable} ${dmMono.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full">
+        {/* First tab stop: jump past the nav. Every page's <main> has id="main". */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-md focus:border focus:border-[var(--color-border)] focus:bg-[var(--color-bg-elevated)] focus:px-3.5 focus:py-2 focus:text-sm focus:text-text-primary focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+        >
+          Skip to content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

@@ -1,129 +1,110 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
-import { GitHubIcon } from "./icons/BrandIcons";
-import { projects } from "@/data/projects";
+import { CATEGORY_LABELS, projects, type Project } from "@/data/projects";
 import { AnimateIn } from "./AnimateIn";
 import { AskAIButton } from "./AskAIButton";
+import { Band } from "./Band";
 
+/** The three cards that lead the Work band, in order. */
+const FEATURED_IDS = ["oneclick", "lottery-backoffice", "game-ui"];
+/** Quiet rows under the cards; the full archive lives at /projects. */
+const ROW_LIMIT = 7;
+
+const featured = FEATURED_IDS.map((id) => projects.find((p) => p.id === id)).filter(
+  (p): p is Project => Boolean(p),
+);
+const rows = projects
+  .filter((p) => !FEATURED_IDS.includes(p.id))
+  .slice(0, ROW_LIMIT);
+
+/**
+ * Work band: three captioned cards, then the rest as hairline rows, then a
+ * link to everything. Cards use a stretched link so the Ask AI chip stays a
+ * sibling of the link rather than a button inside it.
+ */
 export function Projects() {
-  // Homepage bento shows a curated subset; the full archive lives at /projects
-  const bentoProjects = projects.slice(0, 7);
+  return (
+    <Band id="projects" name="Work">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-6 gap-y-7">
+        {featured.map((project, i) => (
+          <AnimateIn key={project.id} delay={i * 0.07}>
+            <FeatureCard project={project} />
+          </AnimateIn>
+        ))}
+      </div>
+
+      <ul
+        role="list"
+        className="mt-[46px] border-t border-[var(--color-border-subtle)]"
+      >
+        {rows.map((project) => (
+          <li
+            key={project.id}
+            className="border-b border-[var(--color-border-subtle)]"
+          >
+            <Link
+              href={`/projects/${project.id}`}
+              className="grid grid-cols-[1fr_auto_62px] items-baseline gap-4 py-[13px] text-text-primary motion-safe:transition-[padding] motion-safe:duration-200 motion-safe:hover:pl-[9px] max-[620px]:grid-cols-[1fr_auto]"
+            >
+              <span className="text-[14.5px]">{project.name}</span>
+              <span className="text-[13px] text-text-muted max-[620px]:hidden">
+                {CATEGORY_LABELS[project.category]}
+              </span>
+              {/* Year only when the data has one — never a guess. */}
+              <span className="text-right font-mono text-xs text-text-muted">
+                {project.year ?? ""}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <Link
+        href="/projects"
+        className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+      >
+        All {projects.length} projects
+        <span
+          aria-hidden="true"
+          className="transition-transform duration-200 group-hover:translate-x-1"
+        >
+          →
+        </span>
+      </Link>
+    </Band>
+  );
+}
+
+function FeatureCard({ project }: { project: Project }) {
+  const meta = (project.stack ?? project.tags).slice(0, 3).join(" · ");
 
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <AnimateIn>
-          <div className="mb-12">
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-text-accent">
-              Selected Work
-            </p>
-            <div className="flex items-end justify-between gap-4">
-              <h2
-                id="projects-heading"
-                className="text-3xl font-semibold tracking-tight text-text-primary"
-              >
-                Projects
-              </h2>
-              <Link
-                href="/projects"
-                className="shrink-0 text-sm text-muted transition-colors hover:text-text-primary"
-              >
-                View all projects ↗
-              </Link>
-            </div>
-          </div>
-        </AnimateIn>
-
-        {/* Bento grid — 3 cols desktop, 2 cols tablet, 1 col mobile */}
-        <div className="grid auto-rows-[280px] grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {bentoProjects.map((project, i) => (
-            <AnimateIn
-              key={project.id}
-              delay={i * 0.07}
-              className={project.featured ? "sm:col-span-2" : "col-span-1"}
-            >
-              <article className="group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface">
-                {/* Stretched link — whole card navigates to detail page */}
-                <Link
-                  href={`/projects/${project.id}`}
-                  aria-label={`View ${project.name}`}
-                  className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ring-offset-[var(--color-bg-base)]"
-                />
-
-                {/* Image or placeholder */}
-                {project.cover ? (
-                  <Image
-                    src={project.cover}
-                    alt={project.name}
-                    fill
-                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-surface to-tertiary/10" />
-                )}
-
-                {/* Gradient — subtle at rest, darkens on hover to make text readable */}
-                <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/20 via-transparent to-transparent transition-opacity duration-400 group-hover:opacity-0" />
-                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 via-indigo-950/40 to-indigo-950/5 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
-
-                {/* Actions — top right (above stretched link). AskAI always
-                    visible for touch; external links reveal on hover */}
-                <div className="absolute right-4 top-4 z-20 flex items-center gap-1.5">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${project.name} on GitHub`}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 hover:text-white group-hover:opacity-100"
-                    >
-                      <GitHubIcon className="h-4 w-4" />
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${project.name} live site`}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-black/50 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 hover:text-white group-hover:opacity-100"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  )}
-                  <AskAIButton projectName={project.name} />
-                </div>
-
-                {/* All content — hidden at rest, slides up on hover */}
-                <div className="absolute inset-0 flex flex-col justify-end translate-y-4 opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100 p-5">
-                  {/* Text content */}
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold text-white">
-                      {project.name}
-                    </h3>
-                    <p className="text-xs leading-relaxed text-white/70 [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white/80 backdrop-blur-sm"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </AnimateIn>
-          ))}
-        </div>
+    <article className="group relative grid gap-[7px]">
+      <div className="relative mb-[5px] aspect-[4/3] overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-bg-input)]">
+        <Image
+          src={project.cover}
+          alt={project.name}
+          fill
+          sizes="(min-width: 1080px) 284px, (min-width: 620px) 33vw, 100vw"
+          className="object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-[1.028]"
+        />
       </div>
-    </section>
+      <h3 className="text-[15px] font-medium text-text-primary group-hover:underline group-hover:underline-offset-[3px]">
+        {project.name}
+      </h3>
+      <p className="text-pretty text-[13.5px] leading-[1.55] text-text-secondary">
+        {project.summary ?? project.description}
+      </p>
+      <p className="font-mono text-[11.5px] text-text-muted">{meta}</p>
+
+      <Link
+        href={`/projects/${project.id}`}
+        aria-label={`View ${project.name}`}
+        className="absolute inset-0 z-10 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--color-bg-base)]"
+      />
+      <div className="absolute right-2.5 top-2.5 z-20">
+        <AskAIButton projectName={project.name} />
+      </div>
+    </article>
   );
 }

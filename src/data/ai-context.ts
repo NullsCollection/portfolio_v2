@@ -74,6 +74,19 @@ Other: UI/UX Design, Responsive Web Design, Print Design, Social Media Systems
 - His Contra profile has gained notable traction specifically around n8n automation content
 - He bridges design and engineering — able to take a product from Figma mockup to deployed app
 
+## OPEN SOURCE
+
+memdb — https://github.com/NullsCollection/agent-recall-memory (MIT)
+- Long-term memory for coding agents. It indexes past Claude Code sessions into a local
+  SQLite store, so "how did we solve this before?" has an answer — even when the answer
+  lives in a different repo.
+- Built with Go 1.25, SQLite, and local Ollama embeddings. Retrieval is a brute-force cosine
+  scan — no vector database, because at a few hundred rows a linear scan is sub-millisecond.
+- Indexed 253 units across 21 repositories; scores 13/14 on its golden-set eval.
+- Install: clone the repo, then run "go install ./..." inside it. Needs Ollama running locally.
+- Why it matters: it shows Raffy builds his own developer tooling, measures retrieval
+  quality with an eval instead of guessing, and keeps things simple (no extra infrastructure).
+
 ## AVAILABILITY & RATES
 
 - Timezone: PHT (UTC+8), flexible for async work
@@ -120,6 +133,11 @@ Q: What's OneClickPost?
 A: It's Raffy's own SaaS product — a social media automation app that lets
    users publish to Facebook, Instagram, LinkedIn, and X simultaneously.
    He built and maintains the entire thing himself.
+
+Q: What's memdb?
+A: Raffy's open-source tool that gives coding agents long-term memory — it indexes
+   past Claude Code sessions into local SQLite so old solutions can be found again.
+   Written in Go, MIT licensed, on GitHub at NullsCollection/agent-recall-memory.
 
 Q: How much do you charge?
 A: Rates depend on project scope and complexity. Reach out at

@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const CYCLE = ["system", "light", "dark"] as const;
 type ThemeValue = (typeof CYCLE)[number];
@@ -22,11 +22,18 @@ const CONFIG: Record<ThemeValue, { icon: React.ReactNode; label: string }> = {
   },
 };
 
+const noopSubscribe = () => () => {};
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  // false on the server and during hydration, true after — same as the
+  // old useEffect mounted flag, without a setState-in-effect render.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
 
-  useEffect(() => setMounted(true), []);
   // Same-size placeholder prevents CLS while JS hydrates
   if (!mounted)
     return (

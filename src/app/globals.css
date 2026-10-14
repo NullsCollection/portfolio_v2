@@ -41,7 +41,7 @@
   --color-tertiary-700: #0e7490;
 
   /* ── Existing semantic tokens (dark stubs — overridden by theme files) ───── */
-  --color-secondary: #4f46e5;
+  --color-secondary: #6366f1;
   --color-tertiary: #22d3ee;
   --color-surface: #303134;
   --color-muted: #96a1b0;
@@ -57,7 +57,7 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #96a1b0;
   --color-text-muted: #64748b;
-  --color-text-accent: #4f46e5;
+  --color-text-accent: #6366f1;
   --color-text-tertiary: #22d3ee;
 
   /* Borders */
@@ -70,9 +70,9 @@
   --color-navbar-border: rgba(255, 255, 255, 0.1);
 
   /* Accent semantic */
-  --color-accent: #4f46e5;
-  --color-accent-hover: #6366f1;
-  --color-accent-subtle: color-mix(in srgb, #4f46e5 10%, transparent);
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-accent-subtle: color-mix(in srgb, #6366f1 12%, transparent);
 
   /* Status */
   --color-status-success: #34d399;
@@ -82,12 +82,13 @@
 
   /* Misc */
   --color-dot-grid: rgba(255, 255, 255, 0.07);
-  --color-dot-grid-hover: rgba(129, 140, 248, 0.55);
+  --color-dot-grid-hover: rgba(129, 140, 248, 0.4);
   --color-scrollbar: rgba(255, 255, 255, 0.1);
   --color-shadow-card: rgba(79, 70, 229, 0.07);
 
   /* Font */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-dm-mono);
 }
 
 /* ─── Base Styles ─────────────────────────────────────────────────────────── */
@@ -207,4 +208,27 @@ body {
 }
 .animate-pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Chat typing indicator — three dots that blip in turn. */
+@keyframes blip {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2.5px);
+  }
+}
+.animate-blip {
+  animation: blip 1.1s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-blip {
+    animation: none;
+    opacity: 0.6;
+  }
 }

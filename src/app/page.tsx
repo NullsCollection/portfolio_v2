@@ -2,6 +2,7 @@ import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { Experience } from "@/components/Experience";
 import { Projects } from "@/components/Projects";
+import { OpenSource } from "@/components/OpenSource";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -12,31 +13,16 @@ export default function Home() {
       <Nav />
 
       {/* Dot-grid canvas wraps all sections */}
-      <main className="dot-grid">
+      <main id="main" className="dot-grid">
         <Hero />
-
-        {/* Thin separator */}
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
-
-        <Experience />
-
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
 
         <Projects />
 
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
+        <OpenSource />
+
+        <Experience />
 
         <About />
-
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
 
         <Contact />
       </main>

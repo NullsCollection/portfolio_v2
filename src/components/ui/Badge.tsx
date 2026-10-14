@@ -10,7 +10,7 @@ export function Badge({ variant = 'default', className = '', children, ...props 
 
   const variants = {
     default: 'bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] border border-[var(--color-border)]',
-    tag: 'bg-tertiary/10 text-tertiary',
+    tag: 'bg-[var(--color-accent-subtle)] text-[var(--color-text-accent)]',
   };
 
   return (

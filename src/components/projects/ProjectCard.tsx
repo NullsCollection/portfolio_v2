@@ -32,7 +32,7 @@ export function ProjectCard({ project }: { project: Project }) {
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-surface to-tertiary/10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-surface to-secondary/5" />
         )}
 
         {/* Hover scrim */}

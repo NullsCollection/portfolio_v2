@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ProjectsMasonry } from "@/components/projects/ProjectsMasonry";
-import { AnimateIn } from "@/components/AnimateIn";
+import { WorkIndex } from "@/components/projects/WorkIndex";
 
 export const metadata: Metadata = {
-  title: "Projects — Raffy Francisco",
+  title: "Work — Raffy Francisco",
   description:
-    "Graphic design, UI/UX, frontend web development, and AI automation work by Raffy Francisco.",
+    "Products, interfaces, automations and illustration by Raffy Francisco — filter by discipline, browse as a grid or scan as a list.",
   alternates: { canonical: "/projects" },
 };
 
@@ -15,24 +16,31 @@ export default function ProjectsPage() {
   return (
     <>
       <Nav />
-      <main className="dot-grid min-h-screen bg-[var(--color-bg-base)]">
-        <div className="mx-auto max-w-6xl px-6 pb-24 pt-28">
-          <AnimateIn>
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-text-accent">
-              Selected &amp; full work
+      <main id="main" className="dot-grid min-h-screen bg-[var(--color-bg-base)]">
+        <div className="mx-auto max-w-[1080px] px-6 pb-[calc(clamp(56px,8vw,96px)+96px)] pt-[calc(64px+clamp(40px,7vw,80px))] max-[620px]:px-4">
+          <header className="max-w-[720px]">
+            <p className="mb-[18px] font-mono text-xs text-text-muted">
+              <Link
+                href="/"
+                className="transition-colors hover:text-text-primary"
+              >
+                Home
+              </Link>{" "}
+              / Work
             </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
-              All Projects
+            <h1 className="text-[clamp(2.4rem,6vw,4rem)] font-[650] leading-none tracking-[-0.034em] text-text-primary">
+              Work
             </h1>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
-              Design, UI/UX, web development, and AI automation — filter by
-              discipline or tag.
+            <p className="mt-4 max-w-[52ch] text-pretty text-[clamp(1rem,1.6vw,1.1875rem)] leading-normal text-text-secondary">
+              Products I built and run, interfaces I designed, and automations
+              that keep working after I log off.
             </p>
-          </AnimateIn>
+          </header>
 
-          <div className="mt-10">
-            <ProjectsMasonry />
-          </div>
+          {/* useSearchParams needs a Suspense boundary on a static page. */}
+          <Suspense>
+            <WorkIndex />
+          </Suspense>
         </div>
       </main>
       <ThemeToggle />

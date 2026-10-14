@@ -26,7 +26,7 @@ export default function BookPage() {
 
   return (
     <div className="dot-grid min-h-screen bg-[var(--color-bg-base)]">
-      <main className="mx-auto max-w-4xl px-6 pb-24 pt-15">
+      <main id="main" className="mx-auto max-w-4xl px-6 pb-24 pt-15">
         {/* Back link */}
         <Link
           href="/"
@@ -78,7 +78,7 @@ export default function BookPage() {
           ) : (
             <div className="flex min-h-[200px] items-center justify-center text-sm text-muted">
               Set{" "}
-              <code className="mx-1 rounded bg-[var(--color-bg-surface)] px-1.5 py-0.5 font-mono text-xs text-tertiary">
+              <code className="mx-1 rounded bg-[var(--color-bg-surface)] px-1.5 py-0.5 font-mono text-xs text-[var(--color-text-accent)]">
                 NEXT_PUBLIC_CAL_LINK
               </code>{" "}
               to enable booking.
