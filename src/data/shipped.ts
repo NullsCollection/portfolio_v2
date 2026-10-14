@@ -38,8 +38,7 @@ export const shipped: ShippedItem[] = [
     date: "2026-08",
     name: "memdb",
     blurb: "Open-source memory for coding agents",
-    // Points at the Open source section once it exists (plan Phase 6).
-    href: "https://github.com/NullsCollection/agent--recall-memory",
+    href: "#source",
   },
   {
     date: "2025-11",
