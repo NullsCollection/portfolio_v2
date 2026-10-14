@@ -1,6 +1,7 @@
 import { Code2, Palette, Bot, Layers } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { AnimateIn } from "./AnimateIn";
+import { Band } from "./Band";
 import { AskAIButton } from "./AskAIButton";
 
 const SPECIALIZATIONS = [
@@ -12,90 +13,74 @@ const SPECIALIZATIONS = [
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="py-24">
-      <div className="mx-auto max-w-4xl px-6">
+    <Band id="about" name="About">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+        {/* Bio column */}
         <AnimateIn>
-          <div className="mb-16">
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-text-accent">
-              Background
+          <div className="flex flex-col gap-5">
+            <p className="text-base leading-relaxed text-muted">
+              I&apos;m a Filipino web developer and automation engineer with five
+              years of experience shipping products across agencies and
+              freelance. I build fast web apps and automate the workflows
+              behind them — React frontends, Next.js APIs, and n8n pipelines
+              wired to AI.{" "}
+              <span className="highlight-wrap text-text-primary">
+                <span>If a process can be automated, I&apos;ll automate it.</span>
+              </span>
             </p>
-            <h2
-              id="about-heading"
-              className="text-3xl font-semibold tracking-tight text-text-primary"
-            >
-              About
-            </h2>
-          </div>
-        </AnimateIn>
+            <p className="text-base leading-relaxed text-muted">
+              Currently open to freelance projects and full-time remote roles.
+            </p>
 
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          {/* Bio column */}
-          <AnimateIn>
-            <div className="flex flex-col gap-5">
-              <p className="text-base leading-relaxed text-muted">
-                I'm a Filipino web developer and automation engineer with five
-                years of experience shipping products across agencies and
-                freelance. I build fast web apps and automate the workflows
-                behind them — React frontends, Next.js APIs, and n8n pipelines
-                wired to AI.{" "}
-                <span className="highlight-wrap text-text-primary">
-                  <span>If a process can be automated, I'll automate it.</span>
-                </span>
-              </p>
-              <p className="text-base leading-relaxed text-muted">
-                Currently open to freelance projects and full-time remote roles.
-              </p>
-
-              {/* Specialization pills */}
-              <div className="flex flex-wrap gap-2 pt-1">
-                {SPECIALIZATIONS.map(({ icon: Icon, label }) => (
-                  <div
-                    key={label}
-                    className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-3 py-1.5 text-sm text-[var(--color-text-secondary)]"
-                  >
-                    <Icon
-                      className="h-3.5 w-3.5 text-secondary"
-                      aria-hidden="true"
-                    />
-                    {label}
-                  </div>
-                ))}
-              </div>
-
-              <div>
-                <AskAIButton
-                  variant="button"
-                  label="Ask AI about my background"
-                  question="What's Raffy's background, skills, and work experience?"
-                />
-              </div>
-            </div>
-          </AnimateIn>
-
-          {/* Skills column */}
-          <AnimateIn delay={0.12}>
-            <div className="flex flex-col gap-7">
-              {skillGroups.map(({ category, skills }) => (
-                <div key={category}>
-                  <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">
-                    {category}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-full bg-surface px-2.5 py-1 text-xs text-muted border border-[var(--color-border)]"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+            {/* Specialization pills */}
+            <div className="flex flex-wrap gap-2 pt-1">
+              {SPECIALIZATIONS.map(({ icon: Icon, label }) => (
+                <div
+                  key={label}
+                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-3 py-1.5 text-sm text-[var(--color-text-secondary)]"
+                >
+                  <Icon
+                    className="h-3.5 w-3.5 text-secondary"
+                    aria-hidden="true"
+                  />
+                  {label}
                 </div>
               ))}
             </div>
-          </AnimateIn>
-        </div>
+
+            <div>
+              <AskAIButton
+                variant="button"
+                label="Ask AI about my background"
+                question="What's Raffy's background, skills, and work experience?"
+              />
+            </div>
+          </div>
+        </AnimateIn>
+
+        {/* Skills column */}
+        <AnimateIn delay={0.12}>
+          <div className="flex flex-col gap-7">
+            {skillGroups.map(({ category, skills }) => (
+              <div key={category}>
+                <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">
+                  {category}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="rounded-full bg-surface px-2.5 py-1 text-xs text-muted border border-[var(--color-border)]"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </AnimateIn>
       </div>
-    </section>
+    </Band>
   );
 }

@@ -15,28 +15,11 @@ export default function Home() {
       <main className="dot-grid">
         <Hero />
 
-        {/* Thin separator */}
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
-
         <Experience />
-
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
 
         <Projects />
 
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
-
         <About />
-
-        <div aria-hidden="true" className="mx-auto max-w-4xl px-6">
-          <div className="h-px bg-[var(--color-border-subtle)]" />
-        </div>
 
         <Contact />
       </main>

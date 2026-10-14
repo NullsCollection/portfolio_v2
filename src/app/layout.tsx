@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Mono, Instrument_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { DotSpotlight } from "@/components/DotSpotlight";
 import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
-const inter = Inter({
+// Two voices: Instrument Sans for anything a person wrote, DM Mono for
+// anything a machine produced (dates, counts, stack lists, commands).
+// Loaded as a variable font so in-between weights like 650 work.
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-instrument",
+  display: "swap",
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-dm-mono",
   display: "swap",
 });
 
@@ -80,7 +90,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full scroll-smooth antialiased`}
+      className={`${instrumentSans.variable} ${dmMono.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full">

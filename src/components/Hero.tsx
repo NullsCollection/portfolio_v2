@@ -197,7 +197,7 @@ export function Hero() {
               {/* Gradient overlay */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/20 via-transparent to-transparent" />
               {/* Corner accent */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-tertiary/8" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-transparent" />
             </div>
           </motion.div>
         </div>
