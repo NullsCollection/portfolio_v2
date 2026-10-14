@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { MotionConfig } from "framer-motion";
 import type { ReactNode } from "react";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -12,7 +13,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       disableTransitionOnChange // prevents FOUC on initial theme resolution;
                                 // CSS transitions in globals.css handle manual toggle
     >
-      {children}
+      {/* Honour the OS reduced-motion setting in every Framer animation. */}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </NextThemesProvider>
   );
 }

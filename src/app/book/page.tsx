@@ -26,7 +26,7 @@ export default function BookPage() {
 
   return (
     <div className="dot-grid min-h-screen bg-[var(--color-bg-base)]">
-      <main className="mx-auto max-w-4xl px-6 pb-24 pt-15">
+      <main id="main" className="mx-auto max-w-4xl px-6 pb-24 pt-15">
         {/* Back link */}
         <Link
           href="/"

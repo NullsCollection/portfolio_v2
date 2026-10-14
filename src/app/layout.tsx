@@ -94,6 +94,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full">
+        {/* First tab stop: jump past the nav. Every page's <main> has id="main". */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-md focus:border focus:border-[var(--color-border)] focus:bg-[var(--color-bg-elevated)] focus:px-3.5 focus:py-2 focus:text-sm focus:text-text-primary focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+        >
+          Skip to content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

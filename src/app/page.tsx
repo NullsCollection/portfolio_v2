@@ -13,7 +13,7 @@ export default function Home() {
       <Nav />
 
       {/* Dot-grid canvas wraps all sections */}
-      <main className="dot-grid">
+      <main id="main" className="dot-grid">
         <Hero />
 
         <Projects />
