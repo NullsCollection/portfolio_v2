@@ -8,6 +8,8 @@ import { Sparkles } from "lucide-react";
  *
  * - `chip`: small icon button overlaid on project card images
  * - `button`: labeled pill for the project detail page
+ * - `icon`: bare sparkles icon for plain backgrounds (Experience rows, Open
+ *   source card) — the `chip` scrim is only legible on top of an image
  */
 export function AskAIButton({
   projectName,
@@ -21,7 +23,7 @@ export function AskAIButton({
   question?: string;
   /** Text for the `button` variant */
   label?: string;
-  variant?: "chip" | "button";
+  variant?: "chip" | "button" | "icon";
   className?: string;
 }) {
   const subject = projectName ?? "Raffy";
@@ -45,6 +47,20 @@ export function AskAIButton({
       >
         <Sparkles className="h-4 w-4 text-text-accent" aria-hidden="true" />
         {label}
+      </button>
+    );
+  }
+
+  if (variant === "icon") {
+    return (
+      <button
+        type="button"
+        onClick={handleClick}
+        title="Ask AI about this"
+        aria-label={`Ask AI about ${subject}`}
+        className={`inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ${className}`}
+      >
+        <Sparkles className="h-4 w-4" aria-hidden="true" />
       </button>
     );
   }
