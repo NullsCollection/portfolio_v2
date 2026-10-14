@@ -93,7 +93,7 @@ export function ProjectDetail({ project }: { project: Project }) {
 
   return (
     <main className="dot-grid min-h-screen bg-[var(--color-bg-base)]">
-      <div className="mx-auto max-w-[1080px] px-6 pb-[clamp(56px,8vw,96px)] pt-[calc(64px+clamp(40px,7vw,80px))] max-[620px]:px-4">
+      <div className="mx-auto max-w-[1080px] px-6 pb-[calc(clamp(56px,8vw,96px)+96px)] pt-[calc(64px+clamp(40px,7vw,80px))] max-[620px]:px-4">
         <header className="max-w-[720px]">
           <p className="mb-[18px] font-mono text-xs text-text-muted">
             <Link

@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, Loader2, ChevronDown, RotateCcw } from "lucide-react";
+import { ArrowUp, ChevronDown, RotateCcw } from "lucide-react";
 
 import { ChatMessageText } from "./ChatMessageText";
 
@@ -18,6 +17,18 @@ interface Message {
 
 const uid = () => crypto.randomUUID();
 
+/** Shown above the bar until the first message, so a visitor never has to
+ *  guess what this thing knows. Label → the question actually sent. */
+const SUGGESTIONS = [
+  ["Is he available?", "Is Raffy available for hire?"],
+  ["What are his rates?", "What does Raffy charge?"],
+  ["Automation work", "Tell me about his automation work"],
+  ["Tech stack", "What is his tech stack?"],
+] as const;
+
+const ICON_BTN =
+  "grid size-[26px] cursor-pointer place-items-center rounded-md text-text-muted transition-colors hover:bg-[var(--color-bg-input)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]";
+
 export function ChatWidget() {
   const pathname = usePathname();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -28,12 +39,12 @@ export function ChatWidget() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Auto-resize textarea up to 6 lines
+  // Auto-resize textarea up to ~4 lines, then scroll
   const autoResize = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 144)}px`;
+    el.style.height = `${Math.min(el.scrollHeight, 104)}px`;
   }, []);
 
   // External trigger (Contact section CTA)
@@ -55,6 +66,15 @@ export function ChatWidget() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
+
+  // Esc collapses the transcript without wiping it
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowMessages(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const sendText = useCallback(
     async (text: string) => {
@@ -145,162 +165,157 @@ export function ChatWidget() {
   };
 
   const hasConversation = messages.length > 0;
+  const logOpen = showMessages && hasConversation;
 
   // Widget is global (root layout) — keep it off the Cal.com booking page
   if (pathname === "/book") return null;
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none"
       aria-label="AI chat assistant"
+      className="fixed bottom-4 left-1/2 z-50 w-[min(560px,calc(100vw-32px))] -translate-x-1/2 max-[620px]:bottom-2.5"
     >
-      {/* ── Messages panel ── */}
-      <AnimatePresence>
-        {showMessages && hasConversation && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={{ type: "spring", damping: 32, stiffness: 420 }}
-            className="pointer-events-auto mx-auto max-w-2xl px-4 mb-1"
-          >
-            <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-base)]/96 shadow-2xl backdrop-blur-xl">
-              {/* Panel header */}
-              <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] px-4 py-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-status-success)] opacity-75" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-status-success)]" />
-                  </span>
-                  <span className="text-xs font-medium text-muted">
-                    Raffy&apos;s AI
-                  </span>
-                </div>
-                <button
-                  onClick={() => setShowMessages(false)}
-                  aria-label="Collapse chat"
-                  className="rounded-md border-[var(--color-border)] p-1 text-muted transition-colors hover:text-foreground"
-                >
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-              </div>
+      {/* Suggested questions — only until the first message */}
+      {!hasConversation && (
+        <div className="mb-2 flex flex-wrap gap-1.5 pl-0.5">
+          {SUGGESTIONS.map(([label, question], i) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => void sendText(question)}
+              className={`cursor-pointer rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg-elevated)_86%,transparent)] px-3 py-[5px] text-[12.5px] text-text-secondary backdrop-blur-md transition-colors hover:border-[var(--color-border-strong)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ${i >= 2 ? "max-[620px]:hidden" : ""}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
-              {/* Messages */}
-              <div className="chat-scroll flex max-h-72 flex-col gap-3 overflow-y-auto px-4 py-4">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={[
-                      "max-w-[82%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
-                      msg.role === "user"
-                        ? "ml-auto bg-secondary text-white"
-                        : "mr-auto bg-surface text-[var(--color-text-primary)]",
-                    ].join(" ")}
-                  >
-                    {msg.role === "assistant" ? (
-                      <ChatMessageText text={msg.content} />
-                    ) : (
-                      msg.content
-                    )}
-                  </div>
-                ))}
-
-                {isLoading && (
-                  <div className="mr-auto flex items-center gap-2 rounded-xl bg-surface px-3.5 py-2.5 text-sm text-muted">
-                    <Loader2
-                      className="h-3.5 w-3.5 animate-spin"
-                      aria-hidden="true"
-                    />
-                    Thinking…
-                  </div>
-                )}
-
-                <div ref={bottomRef} aria-hidden="true" />
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Persistent input bar ── */}
-      <div className="pointer-events-auto">
-        <div className="mx-auto max-w-2xl px-4 py-3">
-          {/* Collapsed indicator */}
-          <AnimatePresence>
-            {hasConversation && !showMessages && (
-              <motion.button
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                onClick={() => setShowMessages(true)}
-                className="mb-2 flex w-full items-center gap-1.5 text-xs text-muted/30 transition-colors hover:text-muted cursor-pointer"
+      {/* One surface: header, transcript and composer split by hairlines */}
+      <div className="overflow-hidden rounded-[14px] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg-elevated)_92%,transparent)] shadow-[0_14px_44px_rgba(0,0,0,0.26)] backdrop-blur-[18px]">
+        {hasConversation && (
+          <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] py-[7px] pl-3.5 pr-2.5">
+            <span className="inline-flex items-center gap-[7px] text-[12.5px] text-text-secondary">
+              <i
+                aria-hidden="true"
+                className="size-1.5 rounded-full bg-[var(--color-status-success)]"
+              />
+              Raffy&apos;s AI
+              {!logOpen && (
+                <span className="font-mono text-[11px] text-text-muted">
+                  · {messages.length} message{messages.length !== 1 ? "s" : ""}
+                </span>
+              )}
+            </span>
+            <span className="inline-flex gap-0.5">
+              <button
+                type="button"
+                onClick={reset}
+                aria-label="Start over"
+                title="Start over"
+                className={ICON_BTN}
+              >
+                <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMessages((open) => !open)}
+                aria-label={logOpen ? "Collapse chat" : "Expand chat"}
+                aria-expanded={logOpen}
+                className={ICON_BTN}
               >
                 <ChevronDown
-                  className="h-3 w-3 rotate-180"
+                  className={`h-3.5 w-3.5 transition-transform ${logOpen ? "" : "rotate-180"}`}
                   aria-hidden="true"
                 />
-                {messages.length} message{messages.length !== 1 ? "s" : ""} —
-                tap to expand
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Input card */}
-          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-input)] transition-colors duration-150 focus-within:border-[var(--color-border-strong)]">
-            <textarea
-              ref={textareaRef}
-              rows={1}
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                autoResize();
-              }}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask something about Raffy"
-              disabled={isLoading}
-              aria-label="Chat message input"
-              className="w-full resize-none bg-transparent px-4 pt-3.5 pb-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none disabled:opacity-50"
-            />
-
-            {/* Action row */}
-            <div className="flex items-center justify-between px-3 pb-3">
-              {/* Left — reset */}
-              <div className="h-7">
-                <AnimatePresence>
-                  {hasConversation && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      onClick={reset}
-                      aria-label="Reset conversation"
-                      title="Reset conversation"
-                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-secondary)]"
-                    >
-                      <RotateCcw className="h-3.5 w-3.5" />
-                    </motion.button>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Right — send */}
-              <button
-                onClick={() => void sendMessage()}
-                disabled={isLoading || !input.trim()}
-                aria-label="Send message"
-                className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-25"
-              >
-                {isLoading ? (
-                  <Loader2
-                    className="h-3.5 w-3.5 animate-spin"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
               </button>
+            </span>
+          </div>
+        )}
+
+        {/* Transcript. Always mounted and collapsed with a CSS grid-rows
+            transition, so closing can never get stuck mid-animation. */}
+        <div
+          aria-hidden={!logOpen}
+          inert={!logOpen}
+          className={`grid motion-safe:transition-[grid-template-rows] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${logOpen ? "grid-rows-[1fr] border-b border-[var(--color-border-subtle)]" : "grid-rows-[0fr]"}`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div
+              role="log"
+              aria-live="polite"
+              className="chat-scroll flex max-h-[min(46vh,340px)] flex-col gap-2.5 overflow-y-auto p-3.5 max-[620px]:max-h-[42vh]"
+            >
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={[
+                    "max-w-[84%] text-pretty rounded-xl px-3 py-[9px] text-[13.5px] leading-[1.55]",
+                    msg.role === "user"
+                      ? "self-end rounded-br-[5px] bg-[var(--color-accent)] text-white"
+                      : "self-start rounded-bl-[5px] bg-[var(--color-bg-input)] text-text-primary",
+                  ].join(" ")}
+                >
+                  {msg.role === "assistant" ? (
+                    <ChatMessageText text={msg.content} />
+                  ) : (
+                    msg.content
+                  )}
+                </div>
+              ))}
+
+              {isLoading && (
+                <div
+                  role="status"
+                  aria-label="Raffy's AI is typing"
+                  className="flex items-center gap-1 self-start rounded-xl rounded-bl-[5px] bg-[var(--color-bg-input)] p-[13px]"
+                >
+                  {[0, 160, 320].map((delay) => (
+                    <i
+                      key={delay}
+                      aria-hidden="true"
+                      style={{ animationDelay: `${delay}ms` }}
+                      className="animate-blip size-[5px] rounded-full bg-text-muted"
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div ref={bottomRef} aria-hidden="true" />
             </div>
           </div>
+        </div>
+
+        {/* Composer — one row: the input grows, send sits inline */}
+        <div className="flex items-end gap-2 py-2 pl-3.5 pr-2">
+          <label htmlFor="chat-input" className="sr-only">
+            Ask something about Raffy
+          </label>
+          <textarea
+            id="chat-input"
+            ref={textareaRef}
+            rows={1}
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+              autoResize();
+            }}
+            onKeyDown={handleKeyDown}
+            // A collapsed transcript reopens when you start typing again.
+            onFocus={() => hasConversation && setShowMessages(true)}
+            placeholder="Ask something about Raffy"
+            disabled={isLoading}
+            className="chat-scroll max-h-[104px] flex-1 resize-none overflow-y-auto bg-transparent py-[7px] text-sm leading-normal text-text-primary placeholder:text-text-muted focus:outline-none disabled:opacity-50"
+          />
+          <button
+            type="button"
+            onClick={() => void sendMessage()}
+            disabled={isLoading || !input.trim()}
+            aria-label="Send message"
+            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-[var(--color-accent)] text-white transition-[background-color,opacity] hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-elevated)] disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ArrowUp className="h-[15px] w-[15px]" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </div>
