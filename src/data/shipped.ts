@@ -22,7 +22,7 @@ export const shipped: ShippedItem[] = [
     date: "2026-10",
     name: "Lottery Back Office",
     blurb: "UI/UX overhaul and front end, 69 screens",
-    // Case study page lands with the project entry (plan Phase 7).
+    href: "/projects/lottery-backoffice",
     image: {
       src: "/assets/projects/lottery-backoffice/cover.png",
       alt: "Lottery back office dashboard on desktop and phone",
