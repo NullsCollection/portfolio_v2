@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "./icons/BrandIcons";
 import { AskAIButton } from "./AskAIButton";
+import { Shipped } from "./Shipped";
 import { heroSkills } from "@/data/skills";
 
 const SOCIAL_LINKS = [
@@ -25,15 +26,15 @@ const BUTTON =
   "inline-flex h-[38px] items-center rounded-lg border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]";
 
 /**
- * Who he is, in one pass: availability, name, one sentence, what he does,
- * and where to go next. No chips, no photo (it lives in About now), and
- * nothing animates on load.
+ * Two columns: left says who he is (availability, name, one sentence, what
+ * he does, where to go next); right shows proof (recently shipped). No chips,
+ * no photo (it lives in About now), and nothing animates on load.
  */
 export function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="mx-auto max-w-[1080px] px-6 pb-[clamp(56px,9vw,104px)] pt-[calc(64px+clamp(56px,9vw,112px))] max-[620px]:px-4"
+      className="mx-auto grid max-w-[1080px] grid-cols-1 items-center gap-11 px-6 min-[960px]:grid-cols-[minmax(0,1fr)_380px] min-[960px]:gap-14 pb-[clamp(56px,9vw,104px)] pt-[calc(64px+clamp(56px,9vw,112px))] max-[620px]:px-4"
     >
       <div className="min-w-0">
         <p className="mb-[30px] inline-flex items-center gap-[9px] text-[13px] text-text-secondary">
@@ -109,6 +110,11 @@ export function Hero() {
           ))}
         </div>
       </div>
+
+      {/* Right column: proof. Stacks under the CTAs below 960px. */}
+      <aside className="min-w-0 max-[959px]:max-w-[520px]">
+        <Shipped />
+      </aside>
     </section>
   );
 }
