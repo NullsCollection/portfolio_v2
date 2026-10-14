@@ -1,10 +1,7 @@
-"use client";
-
-import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import Link from "next/link";
 import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "./icons/BrandIcons";
-import Image from "next/image";
 import { AskAIButton } from "./AskAIButton";
+import { heroSkills } from "@/data/skills";
 
 const SOCIAL_LINKS = [
   {
@@ -24,201 +21,94 @@ const SOCIAL_LINKS = [
   },
 ] as const;
 
-const SPECIALTIES = [
-  { label: "React" },
-  { label: "TypeScript" },
-  { label: "n8n Automation" },
-  { label: "Figma" },
-  { label: "Adobe Illustrator" },
-  { label: "Go + Gin" },
-  { label: "Photoshop" },
-  { label: "Minimalist" },
-] as const;
+const BUTTON =
+  "inline-flex h-[38px] items-center rounded-lg border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]";
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const container: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.09,
-      delayChildren: 0.06,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.68, ease: EASE },
-  },
-};
-
+/**
+ * Who he is, in one pass: availability, name, one sentence, what he does,
+ * and where to go next. No chips, no photo (it lives in About now), and
+ * nothing animates on load.
+ */
 export function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative flex min-h-screen items-center"
+      className="mx-auto max-w-[1080px] px-6 pb-[clamp(56px,9vw,104px)] pt-[calc(64px+clamp(56px,9vw,112px))] max-[620px]:px-4"
     >
-      <div className="mx-auto w-full max-w-6xl px-6 py-36">
-        <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-          {/* Left column */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="flex flex-col gap-5"
-          >
-            {/* Availability badge */}
-            <motion.div variants={fadeUp}>
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/50 px-3.5 py-1.5 backdrop-blur-sm">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-status-success)] opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-status-success)]" />
-                </span>
-                <span className="text-xs font-medium tracking-wide text-muted">
-                  Available for Freelance &amp; Full-Time (Remote)
-                </span>
-              </div>
-            </motion.div>
+      <div className="min-w-0">
+        <p className="mb-[30px] inline-flex items-center gap-[9px] text-[13px] text-text-secondary">
+          <span
+            aria-hidden="true"
+            className="size-[7px] shrink-0 rounded-full bg-[var(--color-status-success)]"
+          />
+          Available for freelance and full-time remote
+        </p>
 
-            {/* Name */}
-            <motion.h1
-              variants={fadeUp}
-              className="text-5xl font-semibold leading-[1.04] tracking-tight text-[var(--color-text-primary)] md:text-7xl"
+        {/* The one place the type gets loud. */}
+        <h1 className="text-[clamp(2.9rem,7.2vw,5rem)] font-[650] leading-[0.94] tracking-[-0.038em] text-[var(--color-accent)]">
+          Raffy&nbsp;Francisco
+        </h1>
+
+        <p className="mt-[22px] max-w-[34ch] text-pretty text-[clamp(1.0625rem,1.8vw,1.3125rem)] leading-[1.45] text-text-secondary">
+          I help businesses scale through clean design and smart development
+        </p>
+
+        {/* Verb leads, tools support it — a client scanning for "Go" or
+            "n8n" still finds it in one pass. */}
+        <dl className="mt-[clamp(26px,3.4vw,34px)] grid max-w-[660px] grid-cols-3 gap-x-[30px] gap-y-5 border-t border-[var(--color-border-subtle)] pt-5 max-[620px]:grid-cols-1 max-[620px]:gap-y-3.5">
+          {heroSkills.map(({ verb, tools }) => (
+            <div
+              key={verb}
+              className="grid content-start gap-0.5 max-[620px]:grid-cols-[82px_1fr] max-[620px]:gap-x-3.5"
             >
-              Raffy Francisco
-            </motion.h1>
-
-            {/* Role */}
-            <motion.p
-              variants={fadeUp}
-              className="text-lg font-normal tracking-tight text-muted md:text-xl"
-            >
-              <span className="highlight-wrap">
-                <span>Web Developer</span>
-              </span>
-              {" | "}
-              <span className="highlight-wrap">
-                <span>Graphic Designer</span>
-              </span>
-              {" | "}
-              <span className="highlight-wrap">
-                <span>AI Automation</span>
-              </span>
-            </motion.p>
-
-            {/* Tagline */}
-            <motion.p
-              variants={fadeUp}
-              className="max-w-[400px] text-sm leading-relaxed text-muted"
-            >
-              Helping businesses scale through clean design, smart development,
-              and digital solutions.
-            </motion.p>
-
-            {/* Specialty tags */}
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-2">
-              {SPECIALTIES.map(({ label }) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-[var(--color-border)] bg-surface px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)]"
-                >
-                  {label}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-wrap items-center gap-3 pt-1"
-            >
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]"
-              >
-                View My Work
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-              <a
-                href="/assets/RESUME-Raffy-francisco.pdf"
-                target="_blank"
-                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-surface px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-strong)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)]"
-              >
-                Download CV
-                <Download className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-              <AskAIButton
-                variant="button"
-                label="Ask AI about me"
-                question="Who is Raffy Francisco and what does he do?"
-              />
-            </motion.div>
-
-            {/* Social links */}
-            <motion.div
-              variants={fadeUp}
-              className="flex items-center gap-1 pt-1"
-            >
-              {SOCIAL_LINKS.map(({ href, Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="rounded-lg p-2 text-muted transition-all hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-strong)]"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Right column — image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
-            className="relative hidden lg:flex lg:justify-center"
-          >
-            {/* Photo frame */}
-            <div className="group relative aspect-[4/4] w-96 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surface transition-all duration-500 hover:border-secondary/40">
-              <Image
-                src="/assets/Profile.png"
-                alt="Raffy Francisco"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                priority
-              />
-              {/* Gradient overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/20 via-transparent to-transparent" />
-              {/* Corner accent */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-transparent" />
+              <dt className="text-[13.5px] font-medium text-text-primary">
+                {verb}
+              </dt>
+              <dd className="text-pretty text-[13px] leading-normal text-text-muted">
+                {tools}
+              </dd>
             </div>
-          </motion.div>
-        </div>
-      </div>
+          ))}
+        </dl>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
-        aria-hidden="true"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-[var(--color-border)] p-1.5">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="h-1.5 w-1 rounded-full bg-[var(--color-border)]"
+        <div className="mt-[clamp(34px,5vw,52px)] flex flex-wrap gap-2.5">
+          <Link
+            href="/projects"
+            className={`${BUTTON} border-[var(--color-accent)] bg-[var(--color-accent)] text-white hover:border-[var(--color-accent-hover)] hover:bg-[var(--color-accent-hover)]`}
+          >
+            See the work
+          </Link>
+          <a
+            href="/assets/RESUME-Raffy-francisco.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${BUTTON} border-[var(--color-border)] text-text-secondary hover:border-[var(--color-border-strong)] hover:text-text-primary`}
+          >
+            Résumé
+          </a>
+          <AskAIButton
+            variant="button"
+            label="Ask AI about Me"
+            question="Who is Raffy Francisco and what does he do?"
+            className="h-[38px] border-transparent! bg-transparent! py-0! text-text-secondary! hover:border-[var(--color-border)]! hover:text-text-primary!"
           />
         </div>
-      </motion.div>
+
+        <div className="mt-5 flex items-center gap-1">
+          {SOCIAL_LINKS.map(({ href, Icon, label }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="rounded-lg p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-strong)]"
+            >
+              <Icon className="h-[18px] w-[18px]" />
+            </a>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

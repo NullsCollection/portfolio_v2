@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Code2, Palette, Bot, Layers } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { AnimateIn } from "./AnimateIn";
@@ -58,9 +59,19 @@ export function About() {
           </div>
         </AnimateIn>
 
-        {/* Skills column */}
+        {/* Skills column — the profile photo moved here from the Hero.
+            Phase 8 rebuilds this column; the photo stays. */}
         <AnimateIn delay={0.12}>
           <div className="flex flex-col gap-7">
+            <figure className="relative aspect-square w-[232px] overflow-hidden rounded-[10px] border border-[var(--color-border)] bg-[var(--color-bg-input)] max-[860px]:w-[200px]">
+              <Image
+                src="/assets/Profile.png"
+                alt="Raffy Francisco"
+                fill
+                sizes="232px"
+                className="object-cover"
+              />
+            </figure>
             {skillGroups.map(({ category, skills }) => (
               <div key={category}>
                 <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">
