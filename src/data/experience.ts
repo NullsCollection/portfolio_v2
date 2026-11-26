@@ -25,7 +25,7 @@ export const experiences: Experience[] = [
     id: "zeinous",
     index: "02",
     period: "2023 - 2025",
-    role: "Graphic Designer",
+    role: "Senior Graphic Designer",
     employmentType: "Full-time",
     company: "Zeinous",
     companyUrl: "https://zeinous.com/",

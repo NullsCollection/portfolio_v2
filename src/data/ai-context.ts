@@ -46,7 +46,7 @@ when greeted.
 - Collaborating remotely with a Thailand-based agency team
 - Managing tasks and version control via Bitbucket and Trello
 
-### Zeinous (Jul 2023–Jan 2025) — Graphic Designer, Full-time
+### Zeinous (Jul 2023–Jan 2025) — Senior Graphic Designer, Full-time
 - Designed social media content, posters, banners, and seasonal illustrations
 - Created UI/UX designs for web and mobile using Figma
 - Delivered consistent branding assets for marketing campaigns

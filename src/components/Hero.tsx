@@ -80,7 +80,7 @@ export function Hero() {
             See the work
           </Link>
           <a
-            href="/assets/RESUME-Raffy-francisco.pdf"
+            href="/assets/Raffy-Francisco-Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={`${BUTTON} border-[var(--color-border)] text-text-secondary hover:border-[var(--color-border-strong)] hover:text-text-primary`}
